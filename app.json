@@ -1,34 +1,38 @@
 {
-    "expo": {
-        "name": "Artemis",
-        "slug": "Artemis",
-        "version": "1.0.0",
-        "orientation": "portrait",
-        "icon": "./app/assets/icon.png",
-        "splash": {
-            "image": "./app/assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
-        },
-        "updates": {
-            "fallbackToCacheTimeout": 0
-        },
-        "assetBundlePatterns": ["**/*"],
-        "ios": {
-            "bundleIdentifier": "com.grs.artemis",
-            "supportsTablet": true,
-            "buildNumber": "1.0.0"
-        },
-        "android": {
-            "package": "com.grs.artemis",
-            "adaptiveIcon": {
-                "foregroundImage": "./app/assets/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
-            },
-            "versionCode": 1
-        },
-        "web": {
-            "favicon": "./assets/favicon.png"
-        }
-    }
+  "expo": {
+    "name": "Artemis",
+    "slug": "Artemis",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./app/assets/icon.png",
+    "splash": {
+      "image": "./app/assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.grs.artemis",
+      "supportsTablet": true,
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.grs.artemis",
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "description": "Reddit client written in React Native",
+    "githubUrl": "https://github.com/danielvigaru/Artemis"
+  }
 }
