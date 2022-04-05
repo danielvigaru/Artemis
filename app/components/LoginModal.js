@@ -14,8 +14,8 @@ export default function LoginModal({ open, setOpen }) {
     const onLoginClick = () => {
         setUsername(user);
         setPassword(pass);
-        setSecureData(constants.USERNAME_KEY, username);
-        setSecureData(constants.PASSWORD_KEY, password);
+        setSecureData(constants.USERNAME_KEY, user);
+        setSecureData(constants.PASSWORD_KEY, pass);
         setOpen(false);
         setIsAuthenticated(true);
     };
