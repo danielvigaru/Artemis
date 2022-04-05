@@ -1,11 +1,23 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
+import { StyleSheet, Text, ScrollView, Button } from "react-native";
 
 export default function Settings() {
     return (
-        <View>
-            <Text>Settings</Text>
-        </View>
+        <ScrollView>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+            <Text>Setare</Text>
+        </ScrollView>
     );
 }
 
