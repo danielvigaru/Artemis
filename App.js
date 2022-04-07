@@ -3,7 +3,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 
+// Contexts
 import AccountContext from "./app/contexts/AccountContext";
+
+// Utils
+import getDeviceOs from "./app/utils/get-os";
 
 import { getSecureData, deleteSecureData } from "./app/utils/storage";
 import constants from "./app/utils/constants";
@@ -18,6 +22,8 @@ export default function App() {
     const [password, setPassword] = useState("");
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+    const [userAgent, setUserAgent] = useState("");
+
     const Tab = createBottomTabNavigator();
 
     const doLogOut = () => {
@@ -27,6 +33,8 @@ export default function App() {
     };
 
     useEffect(() => {
+        setUserAgent(`${getDeviceOs()}:${getBundleId()}:${getVersion()} (by /u/grasozauru)`);
+
         getSecureData(constants.USERNAME_KEY) //
             .then(username => setUsername(username));
 
@@ -42,7 +50,15 @@ export default function App() {
 
     return (
         <AccountContext.Provider
-            value={{ isAuthenticated, setIsAuthenticated, username, setUsername, password, setPassword, doLogOut }}
+            value={{
+                isAuthenticated,
+                setIsAuthenticated,
+                username,
+                setUsername,
+                password,
+                setPassword,
+                doLogOut,
+            }}
         >
             <NavigationContainer>
                 <Tab.Navigator>
