@@ -1,13 +1,22 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { StyleSheet, Text, ScrollView, Button } from "react-native";
+import * as Linking from "expo-linking";
 
 import AccountContext from "../contexts/AccountContext";
-import LoginModal from "../components/LoginModal";
+import useLogin from "../hooks/useLogin";
 
 export default function ProfileScreen() {
-    const [modalOpen, setModalOpen] = useState(false);
-
     const { username, isAuthenticated, doLogOut } = useContext(AccountContext);
+
+    const [snoo, doLogin, handleDeepLink] = useLogin();
+
+    useEffect(() => {
+        Linking.addEventListener("url", handleDeepLink);
+
+        return () => {
+            Linking.removeEventListener("url", handleDeepLink);
+        };
+    }, []);
 
     return (
         <ScrollView>
@@ -18,8 +27,7 @@ export default function ProfileScreen() {
                 </>
             ) : (
                 <>
-                    <Button title="Login" onPress={() => setModalOpen(true)} />
-                    <LoginModal open={modalOpen} setOpen={setModalOpen} />
+                    <Button title="Login" onPress={() => doLogin()} />
                 </>
             )}
         </ScrollView>
