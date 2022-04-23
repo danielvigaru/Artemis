@@ -10,6 +10,10 @@ export default function ProfileScreen() {
 
     const [snoo, doLogin, handleDeepLink] = useLogin();
 
+    const handleLogin = () => {
+        doLogin();
+    };
+
     useEffect(() => {
         Linking.addEventListener("url", handleDeepLink);
 
@@ -27,7 +31,7 @@ export default function ProfileScreen() {
                 </>
             ) : (
                 <>
-                    <Button title="Login" onPress={() => doLogin()} />
+                    <Button title="Login" onPress={handleLogin} />
                 </>
             )}
         </ScrollView>
