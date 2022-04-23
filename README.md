@@ -1,3 +1,5 @@
+[![Expo Publish](https://github.com/danielvigaru/Artemis/actions/workflows/expo-publish.yml/badge.svg)](https://github.com/danielvigaru/Artemis/actions/workflows/expo-publish.yml)
+
 # Artemis Reddit Client
 The app is published for testing using [Expo](https://expo.dev/)
 
