@@ -21,7 +21,7 @@ import constants from "./app/utils/constants";
 import doUserlessAction from "./app/API/userless/do-userless-action";
 
 // Screens
-import FeedScreen from "./app/screens/Feed/FeedScreen";
+import FeedScreen from "./app/screens/FeedScreen";
 import ProfileScreen from "./app/screens/ProfileScreen";
 import SettingsScreen from "./app/screens/SettingsScreen";
 
