@@ -24,6 +24,7 @@ export default function VideoComponent({ postData, visiblePosts, isVideo, viewWi
             ]}
             source={{
                 uri: isVideo ? secure_media.reddit_video.hls_url : preview.reddit_video_preview.hls_url,
+                overrideFileExtensionAndroid: "m3u8",
             }}
             isLooping={true}
             isMuted={true}
