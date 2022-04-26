@@ -11,7 +11,8 @@ import { setSecureData } from "../utils/storage";
 import generateRandomString from "../utils/generate-random-string";
 import getUserAgent from "../utils/get-user-agent";
 
-const userAgent = getUserAgent;
+// Context
+import useStore from "../contexts/AccountZustand";
 
 const clientId = constants.CLIENT_ID;
 const stateVerificationString = generateRandomString(20);
@@ -21,8 +22,9 @@ const redirectUrl = Linking.createURL("/login");
 const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
 
 export default function useLogin() {
-    const [snoo, setSnoo] = useState(() => {});
     const [refreshToken, setRefreshToken] = useState("");
+
+    const { setAccount, setHasAccount, setFinishedLogin, snoo, setSnoo } = useStore();
 
     const doLogin = accessToken => {
         if (accessToken) {
@@ -57,26 +59,33 @@ export default function useLogin() {
                 const { access_token, refresh_token, expires_in } = response;
                 console.log(`Got refresh token: ${refresh_token}`);
 
-                if (refresh_token) setSecureData(constants.REFRESH_TOKEN, refresh_token);
+                if (refresh_token) {
+                    setSecureData(constants.REFRESH_TOKEN, refresh_token);
+                    setRefreshToken(refresh_token);
+                }
             })
             .catch(erorr => console.log(erorr));
     };
 
     useEffect(() => {
-        if (!clientId || !refreshToken || !userAgent) return;
+        if (!refreshToken || !setFinishedLogin) return;
 
         console.log("Creating snoowrap instance with refresh token:", refreshToken);
 
-        const snoo = new snoowrap({
-            userAgent: userAgent,
+        const r = new snoowrap({
+            userAgent: getUserAgent(),
             clientId: clientId,
             clientSecret: "",
             refreshToken: refreshToken,
         });
-        snoo._nextRequestTimestamp = 0;
+        r._nextRequestTimestamp = 120;
 
-        setSnoo(snoo);
-    }, [clientId, refreshToken, userAgent]);
+        r.getMe().then(me => setAccount(me));
 
-    return [snoo, doLogin, handleDeepLink];
+        setSnoo(r);
+        setFinishedLogin(true);
+        setHasAccount(true);
+    }, [refreshToken, setFinishedLogin]);
+
+    return { snoo, doLogin, handleDeepLink };
 }

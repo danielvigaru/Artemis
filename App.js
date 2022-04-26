@@ -10,15 +10,14 @@ import { StyleSheet } from "react-native";
 import React, { useState, useEffect } from "react";
 
 // Contexts
-import AccountContext from "./app/contexts/AccountContext";
+import useStore from "./app/contexts/AccountZustand";
 
 // Hooks
 import useLogin from "./app/hooks/useLogin";
 
 // Utils
-import { getSecureData, deleteSecureData, setSecureData } from "./app/utils/storage";
+import { getSecureData, deleteSecureData } from "./app/utils/storage";
 import constants from "./app/utils/constants";
-import doUserlessAction from "./app/API/userless/do-userless-action";
 
 // Screens
 import FeedScreen from "./app/screens/FeedScreen";
@@ -30,75 +29,30 @@ const Tab = createBottomTabNavigator();
 LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
-    const [snoo, doLogin] = useLogin();
-
-    const [username, setUsername] = useState("");
-    const [hasAccount, setHasAccount] = useState(false);
-
-    const doLogOut = () => {
-        deleteSecureData(constants.REFRESH_TOKEN);
-        setHasAccount(false);
-    };
+    const { doLogin } = useLogin();
+    const { setHasAccount, setFinishedLogin } = useStore();
 
     useEffect(() => {
-        let _hasAccount = false;
-
         getSecureData(constants.REFRESH_TOKEN) //
             .then(token => {
                 if (token) {
+                    console.log("found token in storage");
                     doLogin(token);
-                    _hasAccount = true;
                     setHasAccount(true);
+                } else {
+                    setHasAccount(false);
+                    setFinishedLogin(true);
                 }
             });
-
-        if (!_hasAccount) {
-            // doUserlessAction().then(snoo =>
-            //     snoo
-            //         .getSubmission("u9llrv")
-            //         .fetch()
-            //         .then(post => {
-            //             console.log(post);
-            //         })
-            // );
-        }
     }, []);
 
-    // useEffect(() => {
-    //     if (!snoo) return;
-
-    //     snoo.getMe().then(me => {
-    //         setUsername(me.name);
-    //         setIsAuthenticated(true);
-    //     });
-    // }, [snoo]);
-
     return (
-        <AccountContext.Provider
-            value={{
-                username,
-                setUsername,
-                isAuthenticated: hasAccount,
-                setIsAuthenticated: setHasAccount,
-                doLogOut,
-            }}
-        >
-            <NavigationContainer>
-                <Tab.Navigator>
-                    <Tab.Screen name="Feed" component={FeedScreen} />
-                    <Tab.Screen name="Profile" component={ProfileScreen} />
-                    <Tab.Screen name="Settings" component={SettingsScreen} />
-                </Tab.Navigator>
-            </NavigationContainer>
-        </AccountContext.Provider>
+        <NavigationContainer>
+            <Tab.Navigator>
+                <Tab.Screen name="Feed" component={FeedScreen} />
+                <Tab.Screen name="Profile" component={ProfileScreen} />
+                <Tab.Screen name="Settings" component={SettingsScreen} />
+            </Tab.Navigator>
+        </NavigationContainer>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#f3f3f3",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-});
