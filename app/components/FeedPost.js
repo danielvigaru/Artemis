@@ -3,15 +3,15 @@ import { Pressable, StyleSheet, Text, View, Image, Button } from "react-native";
 import React, { useMemo, useState } from "react";
 
 // Utils
-import calcCanvasHeight from "../utils/calc-canvas-height";
 import truncateText from "../utils/truncate-text";
 
 // Components
+import ImageComponent from "./ImageComponent";
 import LinkComponent from "./LinkComponent";
 import VideoComponent from "./VideoComponent";
 
 const FeedPost = ({ postData, visiblePosts }) => {
-    const { title, selftext, ups: upvotes, id, preview, subreddit_name_prefixed } = postData;
+    const { title, selftext, ups: upvotes, id, subreddit_name_prefixed } = postData;
 
     // State
     const [viewWidth, setViewWidth] = useState(-1);
@@ -27,27 +27,18 @@ const FeedPost = ({ postData, visiblePosts }) => {
 
     // Memoization
     const contentType = useMemo(() => {
-        const { is_self, preview, is_video } = postData;
+        const { is_self, preview, is_video, is_reddit_media_domain } = postData;
 
         if (is_self) return "selftext";
         if (is_video) return "video";
         if (preview) {
             if (preview.reddit_video_preview && preview.reddit_video_preview.is_gif) return "gif";
+            if (preview.images && !is_reddit_media_domain) return "link-with-preview";
             if (preview.images) return "image";
         }
 
         return "link";
     }, [postData]);
-
-    const imageUrl = useMemo(() => {
-        if (contentType !== "image") return "";
-
-        if (preview.images && preview.images[0].resolutions) {
-            const arr = preview.images[0].resolutions;
-            const lastItem = arr[arr.length - 3]; // quality of the image, highest quality: preview.images[0].source.url
-            return lastItem.url;
-        }
-    }, [postData, contentType]);
 
     const handleOpenPost = () => {
         console.log("opening post", id);
@@ -66,17 +57,7 @@ const FeedPost = ({ postData, visiblePosts }) => {
                 <View style={styles.postContent} onLayout={onLayout}>
                     {contentType === "selftext" && <Text>{truncate(selftext, 150)}</Text>}
 
-                    {contentType === "image" && (
-                        <Image
-                            style={styles.image}
-                            source={{
-                                uri: imageUrl,
-                                height: calcCanvasHeight(preview.images[0].source, viewWidth),
-                            }}
-                            resizeMode="cover"
-                            resizeMethod="scale"
-                        />
-                    )}
+                    {contentType === "image" && <ImageComponent postData={postData} viewWidth={viewWidth} />}
 
                     {(contentType === "video" || contentType === "gif") && (
                         <VideoComponent
@@ -87,7 +68,9 @@ const FeedPost = ({ postData, visiblePosts }) => {
                         />
                     )}
 
-                    {contentType === "link" && <LinkComponent url={postData.url} displayUrl={postData.domain} />}
+                    {(contentType === "link" || contentType === "link-with-preview") && (
+                        <LinkComponent postData={postData} viewWidth={viewWidth} />
+                    )}
                 </View>
 
                 <Text style={styles.buttons}>{`${upvotes} ⬆️`}</Text>
@@ -119,11 +102,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         marginVertical: 5,
         padding: 15,
-    },
-    image: {
-        flex: 1,
-        width: null,
-        borderRadius: 10,
     },
     buttons: {
         marginTop: 5,

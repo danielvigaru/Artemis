@@ -1,12 +1,25 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import * as Linking from "expo-linking";
 
-export default function LinkComponent({ url, displayUrl }) {
+// Components
+import ImageComponent from "./ImageComponent";
+
+export default function LinkComponent({ postData, viewWidth }) {
+    const { url, domain, preview } = postData;
+    const hasPreview = !!preview;
+
     return (
-        <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
-            <Text style={styles.linkIcon}>🔗</Text>
-            <Text>{displayUrl}</Text>
-        </Pressable>
+        <View>
+            {hasPreview && (
+                <View style={{ paddingBottom: 20 }}>
+                    <ImageComponent postData={postData} viewWidth={viewWidth} />
+                </View>
+            )}
+            <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
+                <Text style={styles.linkIcon}>🔗</Text>
+                <Text>{domain}</Text>
+            </Pressable>
+        </View>
     );
 }
 
