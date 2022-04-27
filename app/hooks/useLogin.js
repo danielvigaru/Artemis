@@ -26,9 +26,9 @@ export default function useLogin() {
 
     const { setAccount, setHasAccount, setFinishedLogin, snoo, setSnoo } = useStore();
 
-    const doLogin = accessToken => {
-        if (accessToken) {
-            setRefreshToken(accessToken);
+    const doLogin = refreshToken => {
+        if (refreshToken) {
+            setRefreshToken(refreshToken);
         } else {
             Linking.openURL(authUrl);
         }
@@ -68,7 +68,7 @@ export default function useLogin() {
     };
 
     useEffect(() => {
-        if (!refreshToken || !setFinishedLogin) return;
+        if (!refreshToken) return;
 
         console.log("Creating snoowrap instance with refresh token:", refreshToken);
 
@@ -78,14 +78,14 @@ export default function useLogin() {
             clientSecret: "",
             refreshToken: refreshToken,
         });
-        r._nextRequestTimestamp = 120;
+        r._nextRequestTimestamp = -1;
 
         r.getMe().then(me => setAccount(me));
 
         setSnoo(r);
         setFinishedLogin(true);
         setHasAccount(true);
-    }, [refreshToken, setFinishedLogin]);
+    }, [refreshToken]);
 
     return { snoo, doLogin, handleDeepLink };
 }
