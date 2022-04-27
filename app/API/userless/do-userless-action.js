@@ -29,6 +29,6 @@ export default async function doUserlessAction() {
             userAgent: getUserAgent(),
         });
     } catch (error) {
-        return console.log(error);
+        return console.log("[ doUserlessAction ]", error);
     }
 }
