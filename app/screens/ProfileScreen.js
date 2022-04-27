@@ -12,7 +12,7 @@ import constants from "../utils/constants";
 import { deleteSecureData } from "../utils/storage";
 
 export default function ProfileScreen() {
-    const { account, doLogOut } = useStore();
+    const { account, doLogOut, hasAccount } = useStore();
     const { snoo, doLogin, handleDeepLink } = useLogin();
 
     const [posts, setPosts] = useState([]);
@@ -20,19 +20,22 @@ export default function ProfileScreen() {
     const [visiblePosts, setVisiblePosts] = useState([]);
 
     const handleLogOut = () => {
-        deleteSecureData(constants.REFRESH_TOKEN);
-        doLogOut();
         setPosts([]);
+        deleteSecureData(constants.REFRESH_TOKEN);
+        snoo.revokeRefreshToken();
+        doLogOut();
     };
 
     const fetchPosts = async () => {
+        if (!hasAccount) return;
         const me = await snoo.getMe();
         const posts = await me.getSubmissions();
 
         setPosts(posts);
+        setLoading(false);
     };
 
-    onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
+    const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
         const viewableIds = viewableItems.map(viewable => viewable.item.id);
         setVisiblePosts(viewableIds);
     }, []);
@@ -49,23 +52,17 @@ export default function ProfileScreen() {
         if (!snoo) return;
         setLoading(true);
         fetchPosts();
-        setLoading(false);
     }, [snoo]);
 
-    const card = ({ item }) => <FeedPost postData={item} visiblePosts={visiblePosts} />;
+    const Card = ({ item }) => <FeedPost postData={item} visiblePosts={visiblePosts} />;
 
     const headerComponent = () => {
         return (
             <View>
                 {account && account.name ? (
-                    <>
-                        {/* <Text>Hi, {account.name}</Text> */}
-                        <Button title="Log out" onPress={handleLogOut} />
-                    </>
+                    <Button title="Log out" onPress={handleLogOut} />
                 ) : (
-                    <>
-                        <Button title="Login" onPress={() => doLogin()} />
-                    </>
+                    <Button title="Login" onPress={() => doLogin()} />
                 )}
             </View>
         );
@@ -75,7 +72,7 @@ export default function ProfileScreen() {
         <FlatList
             data={posts}
             ListHeaderComponent={headerComponent}
-            renderItem={card}
+            renderItem={Card}
             keyExtractor={item => item.id}
             refreshing={loading}
             onRefresh={fetchPosts}
