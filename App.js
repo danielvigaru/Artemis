@@ -3,6 +3,12 @@ import { decode, encode } from "base-64";
 if (!global.btoa) global.btoa = encode;
 if (!global.atob) global.atob = decode;
 
+// Fontawesome icons
+import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faRedditAlien } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -48,7 +54,30 @@ export default function App() {
 
     return (
         <NavigationContainer>
-            <Tab.Navigator>
+            <Tab.Navigator
+                screenOptions={({ route }) => ({
+                    tabBarIcon: ({ focused }) => {
+                        let iconName;
+
+                        switch (route.name) {
+                            case "Feed":
+                                iconName = faRedditAlien;
+                                break;
+                            case "Profile":
+                                iconName = faAddressCard;
+                                break;
+                            case "Settings":
+                                iconName = faGear;
+                                break;
+
+                            default:
+                                break;
+                        }
+
+                        return <FontAwesomeIcon icon={iconName} size={25} />;
+                    },
+                })}
+            >
                 <Tab.Screen name="Feed" component={FeedScreen} />
                 <Tab.Screen name="Profile" component={ProfileScreen} />
                 <Tab.Screen name="Settings" component={SettingsScreen} />
