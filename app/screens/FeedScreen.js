@@ -1,17 +1,25 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // Components
 import FeedPost from "../components/FeedPost";
 
+// Screens
+import PostScreen from "./PostScreen";
+
 // Context
-import useStore from "../contexts/AccountZustand";
+import accountStore from "../contexts/AccountZustand";
+import postsStore from "../contexts/PostsZustand";
 
 // API
 import doUserlessAction from "../API/userless/do-userless-action";
 
+const Stack = createNativeStackNavigator();
+
 export default function FeedScreen() {
-    const { snoo, hasAccount, finishedLogin } = useStore();
+    const { snoo, hasAccount, finishedLogin } = accountStore();
+    const { feedSelectedPostId } = postsStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -48,18 +56,29 @@ export default function FeedScreen() {
         }
     }, [finishedLogin, hasAccount, snoo]);
 
-    const Card = ({ item }) => <FeedPost postData={item} visiblePosts={visiblePosts} />;
+    const Card = ({ item }) => (
+        <FeedPost postData={item} visiblePosts={visiblePosts} navigation={item.navigation} />
+    );
 
     return (
-        <FlatList
-            data={posts}
-            keyExtractor={item => item.id}
-            onRefresh={fetchPosts}
-            onViewableItemsChanged={onViewableItemsChanged}
-            ref={flatListRef}
-            refreshing={loading}
-            renderItem={Card}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
-        />
+        <Stack.Navigator>
+            <Stack.Screen name="PostList" options={{ headerShown: false }}>
+                {({ navigation }) => (
+                    <FlatList
+                        data={posts.map(post => ({ ...post, navigation }))}
+                        keyExtractor={item => item.id}
+                        onRefresh={fetchPosts}
+                        onViewableItemsChanged={onViewableItemsChanged}
+                        ref={flatListRef}
+                        refreshing={loading}
+                        renderItem={Card}
+                        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
+                    />
+                )}
+            </Stack.Screen>
+            <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
+                {() => <PostScreen posts={posts} postId={feedSelectedPostId} />}
+            </Stack.Screen>
+        </Stack.Navigator>
     );
 }

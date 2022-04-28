@@ -9,12 +9,13 @@ export default function VideoComponent({ postData, visiblePosts, isVideo, viewWi
 
     const videoRef = useRef(null);
 
+    const autoPlayVideo = visiblePosts ? visiblePosts.includes(id) : true;
+
     return (
         <Video
             ref={videoRef}
             style={[
                 {
-                    flex: 1,
                     width: null,
                     borderRadius: 10,
                     height: isVideo
@@ -30,7 +31,7 @@ export default function VideoComponent({ postData, visiblePosts, isVideo, viewWi
             isMuted={true}
             posterSource={thumbnail}
             resizeMode="cover"
-            shouldPlay={visiblePosts.includes(id)}
+            shouldPlay={autoPlayVideo}
             useNativeControls={true}
         />
     );
