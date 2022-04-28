@@ -9,6 +9,9 @@ import getPositionOfLastSpaceBeforeIndex from "./get-position-of-last-space-befo
 
 export default function truncateText(text, maxLength) {
     const _text = text.trim();
+
+    if (_text.length <= maxLength) return _text;
+
     const indexOfLastSpace = getPositionOfLastSpaceBeforeIndex(_text, maxLength);
     const truncatedText = _text.slice(0, indexOfLastSpace) + "...";
 

@@ -10,19 +10,19 @@ import { faRedditAlien } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import { StyleSheet } from "react-native";
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 // Contexts
-import useStore from "./app/contexts/AccountZustand";
+import accountStore from "./app/contexts/AccountZustand";
 
 // Hooks
 import useLogin from "./app/hooks/useLogin";
 
 // Utils
-import { getSecureData, deleteSecureData } from "./app/utils/storage";
+import { getSecureData } from "./app/utils/storage";
 import constants from "./app/utils/constants";
 
 // Screens
@@ -31,12 +31,13 @@ import ProfileScreen from "./app/screens/ProfileScreen";
 import SettingsScreen from "./app/screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
     const { doLogin } = useLogin();
-    const { setHasAccount, setFinishedLogin } = useStore();
+    const { setHasAccount, setFinishedLogin } = accountStore();
 
     useEffect(() => {
         getSecureData(constants.REFRESH_TOKEN) //
