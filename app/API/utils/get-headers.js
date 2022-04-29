@@ -2,7 +2,12 @@ import { encode } from "base-64";
 import constants from "../../utils/constants";
 import getUserAgent from "../../utils/get-user-agent";
 
-const auth = encode(`${constants.CLIENT_ID}:`);
+// ENV
+import { DEV_ENV } from "@env";
+
+const clientId = DEV_ENV ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
+
+const auth = encode(`${clientId}:`);
 const userAgent = getUserAgent();
 
 export default function getHeaders() {

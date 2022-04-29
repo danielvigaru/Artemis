@@ -1,5 +1,6 @@
 export default {
-    CLIENT_ID: "uQz7uT4H2QriApuiwc-G_A",
+    CLIENT_ID_EXPO_DEV: "uQz7uT4H2QriApuiwc-G_A",
+    CLIENT_ID_EXPO_BUILD: "r7efR5A4lbwOnwUCAMqsAA",
     DEVICE_ID: "DEVICE_ID",
     REFRESH_TOKEN: "REFRESH_TOKEN",
 };

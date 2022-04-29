@@ -8,6 +8,11 @@ import { getSecureData, setSecureData } from "../../utils/storage";
 import generateRandomString from "../../utils/generate-random-string";
 import getUserAgent from "../../utils/get-user-agent";
 
+// ENV
+import { DEV_ENV } from "@env";
+
+const clientId = DEV_ENV ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
+
 export default async function doUserlessAction() {
     let deviceId = "";
 
@@ -23,7 +28,7 @@ export default async function doUserlessAction() {
 
     try {
         return await snoowrap.fromApplicationOnlyAuth({
-            clientId: constants.CLIENT_ID,
+            clientId: clientId,
             deviceId: deviceId,
             permanent: false,
             userAgent: getUserAgent(),

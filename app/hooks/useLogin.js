@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import * as Linking from "expo-linking";
 import getHeaders from "../API/utils/get-headers";
 
+// ENV
+import { DEV_ENV } from "@env";
+
 // Constants
 import constants from "../utils/constants";
 
@@ -14,12 +17,13 @@ import getUserAgent from "../utils/get-user-agent";
 // Context
 import accountStore from "../contexts/AccountZustand";
 
-const clientId = constants.CLIENT_ID;
+const clientId = DEV_ENV ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
 const stateVerificationString = generateRandomString(20);
-const scope = "edit, flair, history, identity, mysubreddits, read, report, save, submit, subscribe, vote";
+const scope =
+    "edit, flair, history, identity, mysubreddits, read, report, save, submit, subscribe, vote";
 const redirectUrl = Linking.createURL("/login");
 
-const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
+const authUrl = `https://www.reddit.com/api/v1/authorize.compact?CLIENT_ID_EXPO_DEV=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
 
 export default function useLogin() {
     const [refreshToken, setRefreshToken] = useState("");
