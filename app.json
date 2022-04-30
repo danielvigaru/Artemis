@@ -8,8 +8,8 @@
         "scheme": "artemis",
         "splash": {
             "image": "./app/assets/splash.png",
-            "resizeMode": "contain",
-            "backgroundColor": "#ffffff"
+            "backgroundColor": "#4F5D73",
+            "resizeMode": "cover"
         },
         "updates": {
             "fallbackToCacheTimeout": 0
@@ -22,14 +22,12 @@
         },
         "android": {
             "package": "com.grs.artemis",
+            "icon": "./app/assets/icon.png",
             "adaptiveIcon": {
                 "foregroundImage": "./app/assets/adaptive-icon.png",
-                "backgroundColor": "#FFFFFF"
+                "backgroundColor": "#4F5D73"
             },
             "versionCode": 1
-        },
-        "web": {
-            "favicon": "./app/assets/favicon.png"
         },
         "description": "Reddit client written in React Native",
         "githubUrl": "https://github.com/danielvigaru/Artemis"
