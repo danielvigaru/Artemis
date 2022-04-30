@@ -1,42 +1,34 @@
-import { StyleSheet, Text, View, FlatList } from "react-native";
-import React, { useMemo, useState, useEffect } from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import React, { useState, useEffect } from "react";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
+import zustandStore from "../contexts/zustandStore";
 
-// Utils
-import getSubmissionType from "../utils/get-submission-type";
-import truncateText from "../utils/truncate-text";
+// API
+import doUserlessAction from "../API/userless/do-userless-action";
 
 // Components
 import CommentComponent from "../components/CommentComponent";
-import ImageComponent from "../components/ImageComponent";
-import LinkComponent from "../components/LinkComponent";
-import VideoComponent from "../components/VideoComponent";
-import VoteComponent from "../components/VoteComponent";
+import PostComponent from "../components/PostComponent";
 
 export default function PostScreen({ postId }) {
-    const { snoo } = accountStore();
+    const { snoo, hasAccount } = zustandStore();
 
-    const [viewWidth, setViewWidth] = useState(-1);
-    const [post, setPost] = useState({});
+    const [postData, setPostData] = useState({});
     const [comments, setComments] = useState([]);
 
-    const contentType = useMemo(() => getSubmissionType(post), [post]);
-
-    const onLayout = event => {
-        const { width } = event.nativeEvent.layout;
-        setViewWidth(width);
-    };
-
     const getPostData = async () => {
-        const post = snoo.getSubmission(postId).fetch();
-        return post;
+        if (hasAccount) {
+            return await snoo.getSubmission(postId).fetch();
+        } else {
+            const userless = await doUserlessAction();
+            return await userless.getSubmission(postId).fetch();
+        }
     };
 
     useEffect(async () => {
         const postData = await getPostData();
-        setPost(postData);
+        setPostData(postData);
         setComments(postData.comments);
     }, []);
 
@@ -44,39 +36,7 @@ export default function PostScreen({ postId }) {
         return (
             <View>
                 <View style={styles.postContainer}>
-                    <Text style={[styles.text, styles.bold]}>{post.title}</Text>
-                    <Text style={styles.subName}>{post.subreddit_name_prefixed}</Text>
-
-                    <View style={styles.postContent} onLayout={onLayout}>
-                        {contentType === "selftext" && (
-                            <Text>{truncateText(post.selftext, 150)}</Text>
-                        )}
-
-                        {contentType === "image" && (
-                            <ImageComponent postData={post} viewWidth={viewWidth} />
-                        )}
-
-                        {(contentType === "video" || contentType === "gif") && (
-                            <VideoComponent
-                                postData={post}
-                                isVideo={contentType === "video"}
-                                viewWidth={viewWidth}
-                            />
-                        )}
-
-                        {(contentType === "link" || contentType === "link-with-preview") && (
-                            <LinkComponent postData={post} viewWidth={viewWidth} />
-                        )}
-                    </View>
-
-                    <VoteComponent
-                        upvotes={post.ups}
-                        doUpvote={() => post.upvote()}
-                        downvotes={post.downs}
-                        doDownvote={() => post.downvote()}
-                        voted={post.likes}
-                        doRemoveVote={() => post.unvote()}
-                    />
+                    <PostComponent postData={postData} />
                 </View>
                 <View>
                     {comments.length > 0 &&

@@ -1,15 +1,20 @@
 import { useRef } from "react";
 import { Video } from "expo-av";
 
+// Context
+import zustandStore from "../contexts/zustandStore";
+
 // Utils
 import calcCanvasHeight from "../utils/calc-canvas-height";
 
-export default function VideoComponent({ postData, visiblePosts, isVideo, viewWidth }) {
+export default function VideoComponent({ postData, isVideo, viewWidth }) {
     const { id, preview, secure_media, thumbnail } = postData;
+
+    const { visiblePosts, selectedPost } = zustandStore();
 
     const videoRef = useRef(null);
 
-    const autoPlayVideo = visiblePosts ? visiblePosts.includes(id) : true;
+    const autoPlayVideo = id === selectedPost || visiblePosts.includes(id);
 
     return (
         <Video
@@ -24,7 +29,9 @@ export default function VideoComponent({ postData, visiblePosts, isVideo, viewWi
                 },
             ]}
             source={{
-                uri: isVideo ? secure_media.reddit_video.hls_url : preview.reddit_video_preview.hls_url,
+                uri: isVideo
+                    ? secure_media.reddit_video.hls_url
+                    : preview.reddit_video_preview.hls_url,
                 overrideFileExtensionAndroid: "m3u8",
             }}
             isLooping={true}

@@ -9,8 +9,7 @@ import FeedPost from "../components/FeedPost";
 import PostScreen from "./PostScreen";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
-import postsStore from "../contexts/PostsZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // API
 import doUserlessAction from "../API/userless/do-userless-action";
@@ -18,12 +17,10 @@ import doUserlessAction from "../API/userless/do-userless-action";
 const Stack = createNativeStackNavigator();
 
 export default function FeedScreen() {
-    const { snoo, hasAccount, finishedLogin } = accountStore();
-    const { feedSelectedPostId } = postsStore();
+    const { snoo, hasAccount, finishedLogin, selectedPost, setVisiblePosts } = zustandStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [visiblePosts, setVisiblePosts] = useState([]);
 
     const flatListRef = useRef();
 
@@ -56,9 +53,7 @@ export default function FeedScreen() {
         }
     }, [finishedLogin, hasAccount, snoo]);
 
-    const Card = ({ item }) => (
-        <FeedPost postData={item} visiblePosts={visiblePosts} navigation={item.navigation} />
-    );
+    const Card = ({ item }) => <FeedPost postData={item} navigation={item.navigation} />;
 
     return (
         <Stack.Navigator>
@@ -77,7 +72,7 @@ export default function FeedScreen() {
                 )}
             </Stack.Screen>
             <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
-                {() => <PostScreen posts={posts} postId={feedSelectedPostId} />}
+                {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>
     );

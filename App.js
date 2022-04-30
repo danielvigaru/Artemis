@@ -16,7 +16,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useEffect } from "react";
 
 // Contexts
-import accountStore from "./app/contexts/AccountZustand";
+import zustandStore from "./app/contexts/zustandStore";
 
 // Hooks
 import useLogin from "./app/hooks/useLogin";
@@ -37,7 +37,7 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 export default function App() {
     const { doLogin } = useLogin();
-    const { setHasAccount, setFinishedLogin } = accountStore();
+    const { setHasAccount, setFinishedLogin } = zustandStore();
 
     useEffect(() => {
         getSecureData(constants.REFRESH_TOKEN) //
