@@ -2,10 +2,7 @@ import { encode } from "base-64";
 import constants from "../../utils/constants";
 import getUserAgent from "../../utils/get-user-agent";
 
-// ENV
-import { DEV_ENV } from "@env";
-
-const clientId = DEV_ENV ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
+const clientId = __DEV__ ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
 
 const auth = encode(`${clientId}:`);
 const userAgent = getUserAgent();
