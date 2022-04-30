@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet } from "react-native";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // Components
 import VoteComponent from "./VoteComponent";
@@ -9,7 +9,7 @@ import VoteComponent from "./VoteComponent";
 export default function CommentComponent({ commentData }) {
     const { author, body, id, replies, ups, downs, likes } = commentData;
 
-    const { snoo, hasAccount } = accountStore();
+    const { snoo, hasAccount } = zustandStore();
 
     return (
         <View style={styles.commsContainer}>

@@ -1,19 +1,18 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useMemo, useState } from "react";
+import { Pressable, StyleSheet } from "react-native";
+import React from "react";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
-import postsStore from "../contexts/PostsZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // Components
 import PostComponent from "./PostComponent";
 
 const FeedPost = ({ postData, navigation }) => {
-    const { setFeedSelectedPostId } = postsStore();
+    const { setSelectedPost } = zustandStore();
 
     const handleOpenPost = () => {
         if (navigation) {
-            setFeedSelectedPostId(postData.id);
+            setSelectedPost(postData.id);
             navigation.navigate("PostDetails");
         }
     };

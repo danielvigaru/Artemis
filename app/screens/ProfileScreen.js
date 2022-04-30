@@ -10,8 +10,7 @@ import useLogin from "../hooks/useLogin";
 import FeedPost from "../components/FeedPost";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
-import postsStore from "../contexts/PostsZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // Constants
 import constants from "../utils/constants";
@@ -25,13 +24,12 @@ import PostScreen from "./PostScreen";
 const Stack = createNativeStackNavigator();
 
 export default function ProfileScreen() {
-    const { account, doLogOut, hasAccount } = accountStore();
     const { snoo, doLogin, handleDeepLink } = useLogin();
-    const { feedSelectedPostId } = postsStore();
+
+    const { account, doLogOut, hasAccount, selectedPost, setVisiblePosts } = zustandStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [visiblePosts, setVisiblePosts] = useState([]);
 
     const handleLogOut = () => {
         setPosts([]);
@@ -68,9 +66,7 @@ export default function ProfileScreen() {
         fetchPosts();
     }, [snoo]);
 
-    const Card = ({ item }) => (
-        <FeedPost postData={item} visiblePosts={visiblePosts} navigation={item.navigation} />
-    );
+    const Card = ({ item }) => <FeedPost postData={item} navigation={item.navigation} />;
 
     const headerComponent = () => {
         return (
@@ -101,7 +97,7 @@ export default function ProfileScreen() {
                 )}
             </Stack.Screen>
             <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
-                {() => <PostScreen posts={posts} postId={feedSelectedPostId} />}
+                {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>
     );

@@ -12,7 +12,7 @@ import generateRandomString from "../utils/generate-random-string";
 import getUserAgent from "../utils/get-user-agent";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
+import zustandStore from "../contexts/zustandStore";
 
 const clientId = __DEV__ ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
 const stateVerificationString = generateRandomString(20);
@@ -25,7 +25,7 @@ const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${cli
 export default function useLogin() {
     const [refreshToken, setRefreshToken] = useState("");
 
-    const { setAccount, setHasAccount, setFinishedLogin, snoo, setSnoo } = accountStore();
+    const { setAccount, setHasAccount, setFinishedLogin, snoo, setSnoo } = zustandStore();
 
     const doLogin = refreshToken => {
         if (refreshToken) {

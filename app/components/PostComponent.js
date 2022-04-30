@@ -2,8 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useMemo, useState } from "react";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
-import postsStore from "../contexts/PostsZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // Utils
 import getSubmissionType from "../utils/get-submission-type";
@@ -18,8 +17,7 @@ import VoteComponent from "./VoteComponent";
 const PostComponent = ({ postData }) => {
     const { id, selftext, subreddit_name_prefixed, title } = postData;
 
-    const { snoo, hasAccount } = accountStore();
-    const { visiblePosts } = postsStore();
+    const { snoo, hasAccount } = zustandStore();
 
     // State
     const [viewWidth, setViewWidth] = useState(-1);
@@ -48,7 +46,6 @@ const PostComponent = ({ postData }) => {
                 {(contentType === "video" || contentType === "gif") && (
                     <VideoComponent
                         postData={postData}
-                        visiblePosts={visiblePosts}
                         isVideo={contentType === "video"}
                         viewWidth={viewWidth}
                     />

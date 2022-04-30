@@ -1,8 +1,8 @@
 import { StyleSheet, View, FlatList } from "react-native";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 // Context
-import accountStore from "../contexts/AccountZustand";
+import zustandStore from "../contexts/zustandStore";
 
 // API
 import doUserlessAction from "../API/userless/do-userless-action";
@@ -12,7 +12,7 @@ import CommentComponent from "../components/CommentComponent";
 import PostComponent from "../components/PostComponent";
 
 export default function PostScreen({ postId }) {
-    const { snoo, hasAccount } = accountStore();
+    const { snoo, hasAccount } = zustandStore();
 
     const [postData, setPostData] = useState({});
     const [comments, setComments] = useState([]);
