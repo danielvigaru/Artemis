@@ -19,11 +19,10 @@ const Stack = createNativeStackNavigator();
 
 export default function FeedScreen() {
     const { snoo, hasAccount, finishedLogin } = accountStore();
-    const { feedSelectedPostId } = postsStore();
+    const { feedSelectedPostId, setVisiblePosts } = postsStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [visiblePosts, setVisiblePosts] = useState([]);
 
     const flatListRef = useRef();
 
@@ -56,9 +55,7 @@ export default function FeedScreen() {
         }
     }, [finishedLogin, hasAccount, snoo]);
 
-    const Card = ({ item }) => (
-        <FeedPost postData={item} visiblePosts={visiblePosts} navigation={item.navigation} />
-    );
+    const Card = ({ item }) => <FeedPost postData={item} navigation={item.navigation} />;
 
     return (
         <Stack.Navigator>
