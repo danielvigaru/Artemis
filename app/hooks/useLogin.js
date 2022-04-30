@@ -20,7 +20,7 @@ const scope =
     "edit, flair, history, identity, mysubreddits, read, report, save, submit, subscribe, vote";
 const redirectUrl = Linking.createURL("/login");
 
-const authUrl = `https://www.reddit.com/api/v1/authorize.compact?CLIENT_ID=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
+const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
 
 export default function useLogin() {
     const [refreshToken, setRefreshToken] = useState("");
