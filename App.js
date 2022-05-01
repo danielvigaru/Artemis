@@ -75,8 +75,16 @@ export default function App() {
                                 break;
                         }
 
-                        return <FontAwesomeIcon icon={iconName} size={25} />;
+                        return (
+                            <FontAwesomeIcon
+                                icon={iconName}
+                                size={25}
+                                color={focused ? "#F84505" : "#505D74"}
+                            />
+                        );
                     },
+                    tabBarActiveTintColor: "#F84505",
+                    tabBarInactiveTintColor: "#505D74",
                 })}
             >
                 <Tab.Screen name="Feed" component={FeedScreen} />
