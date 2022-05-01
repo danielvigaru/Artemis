@@ -97,6 +97,7 @@ export default function ProfileScreen() {
                     />
                 )}
             </Stack.Screen>
+
             <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
                 {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
