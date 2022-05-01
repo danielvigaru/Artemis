@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
+import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useMemo, useState } from "react";
 
 // Context
@@ -13,6 +14,12 @@ import ImageComponent from "./ImageComponent";
 import LinkComponent from "./LinkComponent";
 import VideoComponent from "./VideoComponent";
 import VoteComponent from "./VoteComponent";
+
+const markdownFontFix = {
+    code_block: { fontFamily: "JetBrains Mono" },
+    code_inline: { fontFamily: "JetBrains Mono" },
+    fence: { fontFamily: "JetBrains Mono" },
+};
 
 const PostComponent = ({ postData, isPostScreen }) => {
     const { id, selftext, subreddit_name_prefixed, title } = postData;
@@ -37,13 +44,14 @@ const PostComponent = ({ postData, isPostScreen }) => {
             <Text style={styles.subName}>{subreddit_name_prefixed}</Text>
 
             <View style={styles.postContent} onLayout={onLayout}>
-                {contentType === "selftext" ? (
-                    isPostScreen ? (
-                        <Text>{selftext}</Text>
+                {/* {contentType === "selftext" && <Markdown>{selftext}</Markdown>} */}
+
+                {contentType === "selftext" &&
+                    (isPostScreen ? (
+                        <Markdown style={markdownFontFix}>{selftext}</Markdown>
                     ) : (
-                        <Text>{truncateText(selftext, 150)}</Text>
-                    )
-                ) : null}
+                        <Markdown style={markdownFontFix}>{truncateText(selftext, 150)}</Markdown>
+                    ))}
 
                 {contentType === "image" && (
                     <ImageComponent postData={postData} viewWidth={viewWidth} />

@@ -14,6 +14,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useEffect } from "react";
+import * as Font from "expo-font";
 
 // Contexts
 import zustandStore from "./app/contexts/zustandStore";
@@ -39,6 +40,12 @@ export default function App() {
     const { doLogin } = useLogin();
     const { setHasAccount, setFinishedLogin } = zustandStore();
 
+    const loadFonts = async () => {
+        await Font.loadAsync({
+            "JetBrains Mono": require("./app/assets/fonts/JetBrainsMono-VariableFont_wght.ttf"),
+        });
+    };
+
     useEffect(() => {
         getSecureData(constants.REFRESH_TOKEN) //
             .then(token => {
@@ -51,6 +58,8 @@ export default function App() {
                     setFinishedLogin(true);
                 }
             });
+
+        loadFonts();
     }, []);
 
     return (
