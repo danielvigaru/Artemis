@@ -36,7 +36,7 @@ export default function PostScreen({ postId }) {
         return (
             <View>
                 <View style={styles.postContainer}>
-                    <PostComponent postData={postData} />
+                    <PostComponent postData={postData} isPostScreen={true} />
                 </View>
                 <View>
                     {comments.length > 0 &&
