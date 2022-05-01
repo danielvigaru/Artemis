@@ -14,7 +14,7 @@ import LinkComponent from "./LinkComponent";
 import VideoComponent from "./VideoComponent";
 import VoteComponent from "./VoteComponent";
 
-const PostComponent = ({ postData }) => {
+const PostComponent = ({ postData, isPostScreen }) => {
     const { id, selftext, subreddit_name_prefixed, title } = postData;
 
     const { snoo, hasAccount } = zustandStore();
@@ -37,7 +37,13 @@ const PostComponent = ({ postData }) => {
             <Text style={styles.subName}>{subreddit_name_prefixed}</Text>
 
             <View style={styles.postContent} onLayout={onLayout}>
-                {contentType === "selftext" && <Text>{truncateText(selftext, 150)}</Text>}
+                {contentType === "selftext" ? (
+                    isPostScreen ? (
+                        <Text>{selftext}</Text>
+                    ) : (
+                        <Text>{truncateText(selftext, 150)}</Text>
+                    )
+                ) : null}
 
                 {contentType === "image" && (
                     <ImageComponent postData={postData} viewWidth={viewWidth} />
