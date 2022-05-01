@@ -4,7 +4,7 @@ import { useMemo } from "react";
 // Utils
 import calcCanvasHeight from "../utils/calc-canvas-height";
 
-export default function ImageComponent({ postData, viewWidth }) {
+export default function ImageComponent({ postData, viewWidth, roundedCorners }) {
     const { preview } = postData;
 
     const imageUrl = useMemo(() => {
@@ -20,7 +20,7 @@ export default function ImageComponent({ postData, viewWidth }) {
             style={{
                 flex: 1,
                 width: null,
-                borderRadius: 10,
+                borderRadius: roundedCorners ? 10 : 0,
             }}
             resizeMode="cover"
             resizeMethod="scale"

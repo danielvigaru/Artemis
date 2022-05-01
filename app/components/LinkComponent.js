@@ -9,24 +9,25 @@ export default function LinkComponent({ postData, viewWidth }) {
     const hasPreview = !!preview;
 
     return (
-        <View>
-            {hasPreview && (
-                <View style={{ paddingBottom: 20 }}>
-                    <ImageComponent postData={postData} viewWidth={viewWidth} />
-                </View>
-            )}
-            <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
+        <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
+            {hasPreview && <ImageComponent postData={postData} viewWidth={viewWidth} />}
+
+            <View style={styles.linkWrapper}>
                 <Text style={styles.linkIcon}>🔗</Text>
+
                 <Text>{domain}</Text>
-            </Pressable>
-        </View>
+            </View>
+        </Pressable>
     );
 }
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: "#F0F1F3",
         borderRadius: 10,
+        overflow: "hidden",
+    },
+    linkWrapper: {
+        backgroundColor: "#F0F1F3",
         flex: 1,
         flexDirection: "row",
         padding: 20,

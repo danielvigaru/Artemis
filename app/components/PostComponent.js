@@ -54,7 +54,11 @@ const PostComponent = ({ postData, isPostScreen }) => {
                     ))}
 
                 {contentType === "image" && (
-                    <ImageComponent postData={postData} viewWidth={viewWidth} />
+                    <ImageComponent
+                        postData={postData}
+                        viewWidth={viewWidth}
+                        roundedCorners={true}
+                    />
                 )}
 
                 {(contentType === "video" || contentType === "gif") && (
