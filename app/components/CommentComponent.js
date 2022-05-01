@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
@@ -12,6 +12,24 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
 
     const { author, body, downs, id, likes, replies, ups } = commentData;
     const _depth = depth % commetsColorPallete.length;
+
+    const [loadMore, setLoadMore] = useState(false);
+
+    const Replies = () => {
+        if (!replies.length) return null;
+
+        if (depth >= 2 && !loadMore) {
+            return (
+                <Pressable onPress={() => setLoadMore(true)} style={styles.loadMoreButton}>
+                    <Text style={styles.loadMoreText}>Load More Replies</Text>
+                </Pressable>
+            );
+        }
+
+        return replies.map(reply => (
+            <CommentComponent commentData={reply} depth={depth + 1} isReply={true} key={reply.id} />
+        ));
+    };
 
     return (
         <View
@@ -47,15 +65,7 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
                 </View>
             )}
 
-            {replies &&
-                replies.map(reply => (
-                    <CommentComponent
-                        commentData={reply}
-                        depth={depth + 1}
-                        isReply={true}
-                        key={reply.id}
-                    />
-                ))}
+            <Replies />
         </View>
     );
 };
@@ -74,6 +84,15 @@ const styles = StyleSheet.create({
     },
     actionBar: {
         marginVertical: 7,
+    },
+    loadMoreButton: {
+        backgroundColor: "hsla(0, 0%, 50%, 0.25)",
+        borderRadius: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
+    loadMoreText: {
+        color: "#505D74",
     },
 });
 
