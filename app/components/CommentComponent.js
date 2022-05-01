@@ -1,4 +1,5 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
@@ -6,13 +7,47 @@ import zustandStore from "../contexts/zustandStore";
 // Components
 import VoteComponent from "./VoteComponent";
 
-export default function CommentComponent({ commentData }) {
-    const { author, body, id, replies, ups, downs, likes } = commentData;
+const CommentComponent = ({ commentData, depth, isReply }) => {
+    const { commetsColorPallete, hasAccount, snoo } = zustandStore();
 
-    const { snoo, hasAccount } = zustandStore();
+    const { author, body, downs, id, likes, replies, ups } = commentData;
+    const _depth = depth % commetsColorPallete.length;
+
+    const [loadMore, setLoadMore] = useState(false);
+
+    const Replies = () => {
+        if (!replies.length) return null;
+
+        if (depth >= 2 && !loadMore) {
+            return (
+                <Pressable onPress={() => setLoadMore(true)} style={styles.loadMoreButton}>
+                    <Text style={styles.loadMoreText}>Load More Replies</Text>
+                </Pressable>
+            );
+        }
+
+        return replies.map(reply => (
+            <CommentComponent commentData={reply} depth={depth + 1} isReply={true} key={reply.id} />
+        ));
+    };
 
     return (
-        <View style={styles.commsContainer}>
+        <View
+            style={[
+                styles.commsContainer,
+                isReply
+                    ? {
+                          paddingStart: 20,
+                          paddingEnd: 0,
+                          borderStartWidth: 2,
+                          marginStart: -2,
+                          borderColor: depth > 0 ? commetsColorPallete[_depth] : "#f0f0f0",
+                      }
+                    : {
+                          paddingHorizontal: 20,
+                      },
+            ]}
+        >
             <Text style={[styles.text, styles.author]}>{author.name}</Text>
 
             <Text>{body}</Text>
@@ -29,14 +64,15 @@ export default function CommentComponent({ commentData }) {
                     />
                 </View>
             )}
+
+            <Replies />
         </View>
     );
-}
+};
 
 const styles = StyleSheet.create({
     commsContainer: {
         backgroundColor: "#fbfbfb",
-        paddingHorizontal: 20,
         paddingVertical: 10,
         marginVertical: 5,
     },
@@ -49,4 +85,20 @@ const styles = StyleSheet.create({
     actionBar: {
         marginVertical: 7,
     },
+    loadMoreButton: {
+        backgroundColor: "hsla(0, 0%, 50%, 0.25)",
+        borderRadius: 5,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+    },
+    loadMoreText: {
+        color: "#505D74",
+    },
 });
+
+CommentComponent.defaultProps = {
+    isReply: false,
+    depth: 0,
+};
+
+export default React.memo(CommentComponent);
