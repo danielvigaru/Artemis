@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Components
 import FeedPost from "../components/FeedPost";
@@ -23,6 +23,11 @@ export default function FeedScreen() {
     const [loading, setLoading] = useState(false);
 
     const flatListRef = useRef();
+    const viewabilityConfig = useRef({ itemVisiblePercentThreshold: 50 });
+    const onViewableItemsChanged = useRef(({ viewableItems, changed }) => {
+        const viewableIds = viewableItems.map(viewable => viewable.item.id);
+        setVisiblePosts(viewableIds);
+    });
 
     const fetchPosts = () => {
         setLoading(true);
@@ -39,11 +44,6 @@ export default function FeedScreen() {
         }
     };
 
-    const onViewableItemsChanged = useCallback(({ viewableItems, changed }) => {
-        const viewableIds = viewableItems.map(viewable => viewable.item.id);
-        setVisiblePosts(viewableIds);
-    }, []);
-
     useEffect(() => {
         if (!finishedLogin) return;
         fetchPosts();
@@ -57,21 +57,22 @@ export default function FeedScreen() {
 
     return (
         <Stack.Navigator>
-            <Stack.Screen name="PostList" options={{ headerShown: false }}>
+            <Stack.Screen name="Feed">
                 {({ navigation }) => (
                     <FlatList
                         data={posts.map(post => ({ ...post, navigation }))}
                         keyExtractor={item => item.id}
                         onRefresh={fetchPosts}
-                        onViewableItemsChanged={onViewableItemsChanged}
+                        onViewableItemsChanged={onViewableItemsChanged.current}
                         ref={flatListRef}
                         refreshing={loading}
                         renderItem={Card}
-                        viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
+                        viewabilityConfig={viewabilityConfig.current}
                     />
                 )}
             </Stack.Screen>
-            <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
+
+            <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
                 {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>
