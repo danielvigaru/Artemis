@@ -83,7 +83,7 @@ export default function ProfileScreen() {
 
     return (
         <Stack.Navigator>
-            <Stack.Screen name="PostList" options={{ headerShown: false }}>
+            <Stack.Screen name="Profile">
                 {({ navigation }) => (
                     <FlatList
                         data={posts.map(post => ({ ...post, navigation }))}
@@ -97,7 +97,7 @@ export default function ProfileScreen() {
                     />
                 )}
             </Stack.Screen>
-            <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
+            <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
                 {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>

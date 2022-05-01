@@ -61,13 +61,13 @@ export default function App() {
                         let iconName;
 
                         switch (route.name) {
-                            case "Feed":
+                            case "FeedScreen":
                                 iconName = faRedditAlien;
                                 break;
-                            case "Profile":
+                            case "ProfileScreen":
                                 iconName = faAddressCard;
                                 break;
-                            case "Settings":
+                            case "SettingsScreen":
                                 iconName = faGear;
                                 break;
 
@@ -87,9 +87,21 @@ export default function App() {
                     tabBarInactiveTintColor: "#505D74",
                 })}
             >
-                <Tab.Screen name="Feed" component={FeedScreen} />
-                <Tab.Screen name="Profile" component={ProfileScreen} />
-                <Tab.Screen name="Settings" component={SettingsScreen} />
+                <Tab.Screen
+                    name="FeedScreen"
+                    component={FeedScreen}
+                    options={{ headerShown: false, title: "Feed" }}
+                />
+                <Tab.Screen
+                    name="ProfileScreen"
+                    component={ProfileScreen}
+                    options={{ headerShown: false, title: "Profile" }}
+                />
+                <Tab.Screen
+                    name="SettingsScreen"
+                    component={SettingsScreen}
+                    options={{ title: "Settings" }}
+                />
             </Tab.Navigator>
         </NavigationContainer>
     );

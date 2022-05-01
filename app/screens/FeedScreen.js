@@ -57,7 +57,7 @@ export default function FeedScreen() {
 
     return (
         <Stack.Navigator>
-            <Stack.Screen name="PostList" options={{ headerShown: false }}>
+            <Stack.Screen name="Feed">
                 {({ navigation }) => (
                     <FlatList
                         data={posts.map(post => ({ ...post, navigation }))}
@@ -71,7 +71,7 @@ export default function FeedScreen() {
                     />
                 )}
             </Stack.Screen>
-            <Stack.Screen name="PostDetails" options={{ headerShown: false }}>
+            <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
                 {() => <PostScreen posts={posts} postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>
