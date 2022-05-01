@@ -22,7 +22,10 @@ const zustandStore = create(set => ({
 
     visiblePosts: [],
     setVisiblePosts: idArr => set({ visiblePosts: idArr }),
-    // setVisiblePosts: idArr => console.log("din zustand:", idArr),
+
+    // ---
+
+    commetsColorPallete: ["#09015F", "#AF0069", "#55B3B1", "#F6C065"],
 }));
 
 export default zustandStore;
