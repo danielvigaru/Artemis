@@ -54,14 +54,7 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
 
             {hasAccount && (
                 <View style={styles.actionBar}>
-                    <VoteComponent
-                        upvotes={ups}
-                        downvotes={downs}
-                        doUpvote={() => snoo.getComment(id).upvote()}
-                        doDownvote={() => snoo.getComment(id).downvote()}
-                        voted={likes}
-                        doRemoveVote={() => snoo.getComment(id).unvote()}
-                    />
+                    <VoteComponent postData={commentData} />
                 </View>
             )}
 

@@ -4,19 +4,23 @@ import { useState, useEffect } from "react";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+// Context
+import zustandStore from "../contexts/zustandStore";
+
 // Utils
 import formatBigNumber from "../utils/format-big-number";
 
 const ICONS_SIZE = 20;
+const VOTE_TYPE = {
+    UPVOTE: "UPVOTE",
+    DOWNVOTE: "DOWNVOTE",
+};
 
-export default function VoteComponent({
-    upvotes,
-    doUpvote,
-    downvotes,
-    doDownvote,
-    voted,
-    doRemoveVote,
-}) {
+export default function VoteComponent({ postData }) {
+    const { snoo } = zustandStore();
+
+    const { id, ups: upvotes, downs: downvotes, likes: voted } = postData;
+
     const scoreDiff = upvotes - downvotes;
 
     const [voteType, setVoteType] = useState("");
@@ -25,20 +29,20 @@ export default function VoteComponent({
     const handleVoteChange = type => {
         let alreadyVoted = false;
 
-        if (type === "up") {
+        if (type === VOTE_TYPE.UPVOTE) {
             if (type === voteType) {
                 alreadyVoted = true;
             } else {
-                setVoteType("up");
+                setVoteType(VOTE_TYPE.UPVOTE);
                 doUpvote();
                 setScore(scoreDiff + 1);
             }
         }
-        if (type === "down") {
+        if (type === VOTE_TYPE.DOWNVOTE) {
             if (type === voteType) {
                 alreadyVoted = true;
             } else {
-                setVoteType("down");
+                setVoteType(VOTE_TYPE.DOWNVOTE);
                 doDownvote();
                 setScore(scoreDiff - 1);
             }
@@ -51,13 +55,17 @@ export default function VoteComponent({
         }
     };
 
+    const doUpvote = () => snoo.getSubmission(id).upvote();
+    const doDownvote = () => snoo.getSubmission(id).downvote();
+    const doRemoveVote = () => snoo.getSubmission(id).unvote();
+
     useEffect(() => {
         switch (voted) {
             case true:
-                setVoteType("up");
+                setVoteType(VOTE_TYPE.UPVOTE);
                 break;
             case false:
-                setVoteType("down");
+                setVoteType(VOTE_TYPE.DOWNVOTE);
                 break;
             default:
                 setVoteType(null);
@@ -67,21 +75,21 @@ export default function VoteComponent({
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => handleVoteChange("up")}>
+            <Pressable onPress={() => handleVoteChange(VOTE_TYPE.UPVOTE)}>
                 <FontAwesomeIcon
                     icon={faArrowUp}
                     size={ICONS_SIZE}
-                    color={voteType === "up" ? "#30BA00" : "black"}
+                    color={voteType === VOTE_TYPE.UPVOTE ? "#30BA00" : "black"}
                 />
             </Pressable>
 
             <Text style={styles.score}>{formatBigNumber(score)}</Text>
 
-            <Pressable onPress={() => handleVoteChange("down")}>
+            <Pressable onPress={() => handleVoteChange(VOTE_TYPE.DOWNVOTE)}>
                 <FontAwesomeIcon
                     icon={faArrowDown}
                     size={ICONS_SIZE}
-                    color={voteType === "down" ? "red" : "black"}
+                    color={voteType === VOTE_TYPE.DOWNVOTE ? "red" : "black"}
                 />
             </Pressable>
         </View>

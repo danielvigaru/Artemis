@@ -74,16 +74,7 @@ const PostComponent = ({ postData, isPostScreen }) => {
                 )}
             </View>
 
-            {hasAccount && (
-                <VoteComponent
-                    upvotes={postData.ups}
-                    doUpvote={() => snoo.getSubmission(id).upvote()}
-                    downvotes={postData.downs}
-                    doDownvote={() => snoo.getSubmission(id).downvote()}
-                    voted={postData.likes}
-                    doRemoveVote={() => snoo.getSubmission(id).unvote()}
-                />
-            )}
+            {hasAccount && <VoteComponent postData={postData} />}
         </View>
     );
 };
