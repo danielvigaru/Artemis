@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import FeedPost from "../components/FeedPost";
 
 // Screens
+import CommentScreen from "./CommentScreen";
 import PostScreen from "./PostScreen";
 
 // Context
@@ -73,7 +74,11 @@ export default function FeedScreen() {
             </Stack.Screen>
 
             <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
-                {() => <PostScreen posts={posts} postId={selectedPost} />}
+                {({ navigation }) => <PostScreen postId={selectedPost} navigation={navigation} />}
+            </Stack.Screen>
+
+            <Stack.Screen name="AddComment" options={{ title: "Add Comment" }}>
+                {() => <CommentScreen postId={selectedPost} />}
             </Stack.Screen>
         </Stack.Navigator>
     );

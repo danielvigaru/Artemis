@@ -11,7 +11,7 @@ import doUserlessAction from "../API/userless/do-userless-action";
 import CommentComponent from "../components/CommentComponent";
 import PostComponent from "../components/PostComponent";
 
-export default function PostScreen({ postId }) {
+export default function PostScreen({ postId, navigation }) {
     const { snoo, hasAccount } = zustandStore();
 
     const [postData, setPostData] = useState({});
@@ -36,12 +36,16 @@ export default function PostScreen({ postId }) {
         return (
             <View>
                 <View style={styles.postContainer}>
-                    <PostComponent postData={postData} isPostScreen={true} />
+                    <PostComponent postData={{ ...postData, navigation }} isPostScreen={true} />
                 </View>
                 <View>
                     {comments.length > 0 &&
                         comments.map(comment => (
-                            <CommentComponent key={comment.id} commentData={comment} />
+                            <CommentComponent
+                                key={comment.id}
+                                commentData={comment}
+                                navigation={navigation}
+                            />
                         ))}
                 </View>
             </View>

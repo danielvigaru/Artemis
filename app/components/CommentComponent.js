@@ -7,10 +7,10 @@ import zustandStore from "../contexts/zustandStore";
 // Components
 import VoteComponent from "./VoteComponent";
 
-const CommentComponent = ({ commentData, depth, isReply }) => {
-    const { commetsColorPallete, hasAccount, snoo } = zustandStore();
+const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
+    const { commetsColorPallete, hasAccount } = zustandStore();
 
-    const { author, body, downs, id, likes, replies, ups } = commentData;
+    const { author, body, replies } = commentData;
     const _depth = depth % commetsColorPallete.length;
 
     const [loadMore, setLoadMore] = useState(false);
@@ -54,7 +54,7 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
 
             {hasAccount && (
                 <View style={styles.actionBar}>
-                    <VoteComponent postData={commentData} />
+                    <VoteComponent postData={{ ...commentData, navigation }} />
                 </View>
             )}
 

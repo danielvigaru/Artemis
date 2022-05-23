@@ -1,7 +1,7 @@
 import { Text, Pressable, View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faArrowDown, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 // Context
@@ -17,11 +17,11 @@ const VOTE_TYPE = {
 };
 
 export default function VoteComponent({ postData }) {
-    const { snoo } = zustandStore();
+    const { snoo, setSelectedPost } = zustandStore();
 
-    const { id, ups: upvotes, downs: downvotes, likes: voted } = postData;
+    const { id, ups: upvotes, downs: downvotes, likes: voted, navigation } = postData;
 
-    const scoreDiff = upvotes - downvotes;
+    const scoreDiff = upvotes - downvotes || 0;
 
     const [voteType, setVoteType] = useState("");
     const [score, setScore] = useState(scoreDiff);
@@ -59,6 +59,13 @@ export default function VoteComponent({ postData }) {
     const doDownvote = () => snoo.getSubmission(id).downvote();
     const doRemoveVote = () => snoo.getSubmission(id).unvote();
 
+    const openCommentScreen = () => {
+        if (navigation) {
+            setSelectedPost(id);
+            navigation.navigate("AddComment");
+        }
+    };
+
     useEffect(() => {
         switch (voted) {
             case true:
@@ -75,6 +82,12 @@ export default function VoteComponent({ postData }) {
 
     return (
         <View style={styles.container}>
+            <Pressable onPress={openCommentScreen}>
+                <FontAwesomeIcon icon={faCommentDots} size={ICONS_SIZE} />
+            </Pressable>
+
+            <Text style={styles.separator}>|</Text>
+
             <Pressable onPress={() => handleVoteChange(VOTE_TYPE.UPVOTE)}>
                 <FontAwesomeIcon
                     icon={faArrowUp}
@@ -108,9 +121,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginHorizontal: 7,
     },
+    separator: {
+        marginHorizontal: 14,
+    },
 });
-
-VoteComponent.defaultProps = {
-    upvotes: 0,
-    downvotes: 0,
-};
