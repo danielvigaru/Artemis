@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useState } from "react";
 
 // Context
@@ -6,6 +7,12 @@ import zustandStore from "../contexts/zustandStore";
 
 // Components
 import VoteComponent from "./VoteComponent";
+
+const MARKDOWN_FONT_FIX = {
+    code_block: { fontFamily: "JetBrains Mono" },
+    code_inline: { fontFamily: "JetBrains Mono" },
+    fence: { fontFamily: "JetBrains Mono" },
+};
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
     const { commetsColorPallete, hasAccount } = zustandStore();
@@ -50,7 +57,7 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
         >
             <Text style={[styles.text, styles.author]}>{author.name}</Text>
 
-            <Text>{body}</Text>
+            <Markdown style={MARKDOWN_FONT_FIX}>{body}</Markdown>
 
             {hasAccount && (
                 <View style={styles.actionBar}>
