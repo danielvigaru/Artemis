@@ -16,6 +16,7 @@ export default function PostScreen({ postId, navigation }) {
 
     const [postData, setPostData] = useState({});
     const [comments, setComments] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     const getPostData = async () => {
         if (hasAccount) {
@@ -24,6 +25,17 @@ export default function PostScreen({ postId, navigation }) {
             const userless = await doUserlessAction();
             return await userless.getSubmission(postId).fetch();
         }
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        getPostData()
+            .then(postData => {
+                setPostData(postData);
+            })
+            .finally(() => {
+                setRefreshing(false);
+            });
     };
 
     useEffect(async () => {
@@ -52,7 +64,7 @@ export default function PostScreen({ postId, navigation }) {
         );
     };
 
-    return <FlatList ListHeaderComponent={Post} />;
+    return <FlatList refreshing={refreshing} onRefresh={onRefresh} ListHeaderComponent={Post} />;
 }
 
 const styles = StyleSheet.create({
