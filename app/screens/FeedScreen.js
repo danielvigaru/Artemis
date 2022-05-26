@@ -18,7 +18,14 @@ import doUserlessAction from "../API/userless/do-userless-action";
 const Stack = createNativeStackNavigator();
 
 export default function FeedScreen() {
-    const { snoo, hasAccount, finishedLogin, selectedPost, setVisiblePosts } = zustandStore();
+    const {
+        snoo,
+        hasAccount,
+        finishedLogin,
+        selectedPost,
+        selectedPostForComment,
+        setVisiblePosts,
+    } = zustandStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -78,7 +85,9 @@ export default function FeedScreen() {
             </Stack.Screen>
 
             <Stack.Screen name="AddComment" options={{ title: "Add Comment" }}>
-                {() => <CommentScreen postId={selectedPost} />}
+                {({ navigation }) => (
+                    <CommentScreen postId={selectedPostForComment} navigation={navigation} />
+                )}
             </Stack.Screen>
         </Stack.Navigator>
     );

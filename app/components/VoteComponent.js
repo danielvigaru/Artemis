@@ -1,6 +1,7 @@
 import { Text, Pressable, View, StyleSheet } from "react-native";
 import { useState, useEffect } from "react";
 
+// FontAwesome
 import { faArrowUp, faArrowDown, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
@@ -16,11 +17,10 @@ const VOTE_TYPE = {
     DOWNVOTE: "DOWNVOTE",
 };
 
-export default function VoteComponent({ postData }) {
-    const { snoo, setSelectedPost } = zustandStore();
+export default function VoteComponent({ postData, doUpvote, doDownvote, doRemoveVote }) {
+    const { setSelectedPostForComment } = zustandStore();
 
     const { id, ups: upvotes, downs: downvotes, likes: voted, navigation } = postData;
-
     const scoreDiff = upvotes - downvotes || 0;
 
     const [voteType, setVoteType] = useState("");
@@ -33,8 +33,8 @@ export default function VoteComponent({ postData }) {
             if (type === voteType) {
                 alreadyVoted = true;
             } else {
-                setVoteType(VOTE_TYPE.UPVOTE);
                 doUpvote();
+                setVoteType(VOTE_TYPE.UPVOTE);
                 setScore(scoreDiff + 1);
             }
         }
@@ -42,28 +42,22 @@ export default function VoteComponent({ postData }) {
             if (type === voteType) {
                 alreadyVoted = true;
             } else {
-                setVoteType(VOTE_TYPE.DOWNVOTE);
                 doDownvote();
+                setVoteType(VOTE_TYPE.DOWNVOTE);
                 setScore(scoreDiff - 1);
             }
         }
 
         if (alreadyVoted) {
-            setVoteType(null);
             doRemoveVote();
+            setVoteType(null);
             setScore(scoreDiff);
         }
     };
 
-    const doUpvote = () => snoo.getSubmission(id).upvote();
-    const doDownvote = () => snoo.getSubmission(id).downvote();
-    const doRemoveVote = () => snoo.getSubmission(id).unvote();
-
     const openCommentScreen = () => {
-        if (navigation) {
-            setSelectedPost(id);
-            navigation.navigate("AddComment");
-        }
+        setSelectedPostForComment(id);
+        navigation.navigate("AddComment");
     };
 
     useEffect(() => {

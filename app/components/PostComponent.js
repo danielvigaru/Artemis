@@ -74,7 +74,14 @@ const PostComponent = ({ postData, isPostScreen }) => {
                 )}
             </View>
 
-            {hasAccount && <VoteComponent postData={postData} />}
+            {hasAccount && (
+                <VoteComponent
+                    postData={postData}
+                    doUpvote={() => snoo.getSubmission(id).upvote()}
+                    doDownvote={() => snoo.getSubmission(id).downvote()}
+                    doRemoveVote={() => snoo.getSubmission(id).unvote()}
+                />
+            )}
         </View>
     );
 };

@@ -11,10 +11,8 @@ const FeedPost = ({ postData, navigation }) => {
     const { setSelectedPost } = zustandStore();
 
     const handleOpenPost = () => {
-        if (navigation) {
-            setSelectedPost(postData.id);
-            navigation.navigate("PostDetails");
-        }
+        setSelectedPost(postData.id);
+        navigation.navigate("PostDetails");
     };
 
     return (
@@ -25,7 +23,7 @@ const FeedPost = ({ postData, navigation }) => {
                 { backgroundColor: pressed ? "#f9f9f9" : "#fff" },
             ]}
         >
-            <PostComponent postData={postData} />
+            <PostComponent postData={{ ...postData, navigation }} />
         </Pressable>
     );
 };

@@ -15,9 +15,9 @@ const MARKDOWN_FONT_FIX = {
 };
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
-    const { commetsColorPallete, hasAccount } = zustandStore();
+    const { commetsColorPallete, hasAccount, snoo } = zustandStore();
 
-    const { author, body, replies } = commentData;
+    const { id, author, body, replies } = commentData;
     const _depth = depth % commetsColorPallete.length;
 
     const [loadMore, setLoadMore] = useState(false);
@@ -34,7 +34,13 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
         }
 
         return replies.map(reply => (
-            <CommentComponent commentData={reply} depth={depth + 1} isReply={true} key={reply.id} />
+            <CommentComponent
+                commentData={reply}
+                navigation={navigation}
+                depth={depth + 1}
+                isReply={true}
+                key={reply.id}
+            />
         ));
     };
 
@@ -61,7 +67,12 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
 
             {hasAccount && (
                 <View style={styles.actionBar}>
-                    <VoteComponent postData={{ ...commentData, navigation }} />
+                    <VoteComponent
+                        postData={{ ...commentData, navigation }}
+                        doUpvote={() => snoo.getComment(id).upvote()}
+                        doDownvote={() => snoo.getComment(id).downvote()}
+                        doRemoveVote={() => snoo.getComment(id).unvote()}
+                    />
                 </View>
             )}
 
