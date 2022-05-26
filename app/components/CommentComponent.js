@@ -1,4 +1,5 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { merge } from "lodash";
+import { Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useState } from "react";
 
@@ -8,11 +9,8 @@ import zustandStore from "../contexts/zustandStore";
 // Components
 import VoteComponent from "./VoteComponent";
 
-const MARKDOWN_FONT_FIX = {
-    code_block: { fontFamily: "JetBrains Mono" },
-    code_inline: { fontFamily: "JetBrains Mono" },
-    fence: { fontFamily: "JetBrains Mono" },
-};
+// Constants
+import constants from "../utils/constants";
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
     const { commetsColorPallete, hasAccount, snoo } = zustandStore();
@@ -22,13 +20,24 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
 
     const [loadMore, setLoadMore] = useState(false);
 
+    const colorScheme = useColorScheme();
+
     const Replies = () => {
         if (!replies.length) return null;
 
         if (depth >= 2 && !loadMore) {
             return (
                 <Pressable onPress={() => setLoadMore(true)} style={styles.loadMoreButton}>
-                    <Text style={styles.loadMoreText}>Load More Replies</Text>
+                    <Text
+                        style={[
+                            styles.loadMoreText,
+                            colorScheme === "dark"
+                                ? { color: constants.DARK_THEME_LIGHT_COLOR }
+                                : null,
+                        ]}
+                    >
+                        Load More Replies
+                    </Text>
                 </Pressable>
             );
         }
@@ -48,6 +57,7 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
         <View
             style={[
                 styles.commsContainer,
+                colorScheme === "dark" ? styles.commsContainerDark : null,
                 isReply
                     ? {
                           paddingStart: 20,
@@ -61,9 +71,25 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
                       },
             ]}
         >
-            <Text style={[styles.text, styles.author]}>{author.name}</Text>
+            <Text
+                style={[
+                    styles.text,
+                    styles.author,
+                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
+                ]}
+            >
+                {author.name}
+            </Text>
 
-            <Markdown style={MARKDOWN_FONT_FIX}>{body}</Markdown>
+            <Markdown
+                style={
+                    colorScheme === "dark"
+                        ? merge({}, constants.MARKDOWN_FONT_FIX, constants.MARKDOWN_DARK_MODE_FIX)
+                        : constants.MARKDOWN_FONT_FIX
+                }
+            >
+                {body}
+            </Markdown>
 
             {hasAccount && (
                 <View style={styles.actionBar}>
@@ -86,6 +112,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#fbfbfb",
         paddingVertical: 10,
         marginVertical: 5,
+    },
+    commsContainerDark: {
+        backgroundColor: "#46474A",
     },
     text: {
         marginVertical: 5,

@@ -1,21 +1,34 @@
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 import * as Linking from "expo-linking";
 
 // Components
 import ImageComponent from "./ImageComponent";
 
+// Constants
+import constants from "../utils/constants";
+
 export default function LinkComponent({ postData, viewWidth }) {
     const { url, domain, preview } = postData;
     const hasPreview = !!preview;
+
+    const colorScheme = useColorScheme();
 
     return (
         <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
             {hasPreview && <ImageComponent postData={postData} viewWidth={viewWidth} />}
 
-            <View style={styles.linkWrapper}>
+            <View
+                style={[styles.linkWrapper, colorScheme === "dark" ? styles.linkWrapperDark : null]}
+            >
                 <Text style={styles.linkIcon}>🔗</Text>
 
-                <Text>{domain}</Text>
+                <Text
+                    style={
+                        colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null
+                    }
+                >
+                    {domain}
+                </Text>
             </View>
         </Pressable>
     );
@@ -31,6 +44,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         padding: 20,
+    },
+    linkWrapperDark: {
+        backgroundColor: "#828384",
     },
     linkIcon: {
         marginRight: 15,

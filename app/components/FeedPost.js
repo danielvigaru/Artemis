@@ -30,12 +30,9 @@ const FeedPost = ({ postData, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderColor: "#f0f0f0",
-        borderWidth: StyleSheet.hairlineWidth,
         flex: 1,
         justifyContent: "center",
         marginVertical: 5,
-        padding: 15,
     },
 });
 

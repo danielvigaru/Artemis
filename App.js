@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LogBox } from "react-native";
+import { LogBox, useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useEffect } from "react";
 import * as Font from "expo-font";
@@ -19,12 +19,14 @@ import * as Font from "expo-font";
 // Contexts
 import zustandStore from "./app/contexts/zustandStore";
 
+// Constants
+import constants from "./app/utils/constants";
+
 // Hooks
 import useLogin from "./app/hooks/useLogin";
 
 // Utils
 import { getSecureData } from "./app/utils/storage";
-import constants from "./app/utils/constants";
 
 // Screens
 import FeedScreen from "./app/screens/FeedScreen";
@@ -37,9 +39,23 @@ const Stack = createNativeStackNavigator();
 LogBox.ignoreLogs(["Setting a timer"]);
 LogBox.ignoreLogs(["Unhandled rejection Error"]);
 
+const DARK_THEME = {
+    dark: true,
+    colors: {
+        primary: "#F84505",
+        background: "#2E282A",
+        card: "#46474A",
+        text: constants.DARK_THEME_LIGHT_COLOR,
+        border: "rgb(199, 199, 204)",
+        notification: "#46474A",
+    },
+};
+
 export default function App() {
     const { doLogin } = useLogin();
     const { setHasAccount, setFinishedLogin } = zustandStore();
+
+    const colorScheme = useColorScheme();
 
     const loadFonts = async () => {
         await Font.loadAsync({
@@ -64,7 +80,7 @@ export default function App() {
     }, []);
 
     return (
-        <NavigationContainer>
+        <NavigationContainer theme={colorScheme === "dark" ? DARK_THEME : undefined}>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
                     tabBarIcon: ({ focused }) => {
@@ -89,12 +105,19 @@ export default function App() {
                             <FontAwesomeIcon
                                 icon={iconName}
                                 size={25}
-                                color={focused ? "#F84505" : "#505D74"}
+                                color={
+                                    focused
+                                        ? "#F84505"
+                                        : colorScheme === "dark"
+                                        ? constants.DARK_THEME_LIGHT_COLOR
+                                        : "#505D74"
+                                }
                             />
                         );
                     },
                     tabBarActiveTintColor: "#F84505",
-                    tabBarInactiveTintColor: "#505D74",
+                    tabBarInactiveTintColor:
+                        colorScheme === "dark" ? constants.DARK_THEME_LIGHT_COLOR : "#505D74",
                 })}
             >
                 <Tab.Screen

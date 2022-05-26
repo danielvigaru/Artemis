@@ -1,6 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import { merge } from "lodash";
+import { StyleSheet, Text, View, useColorScheme } from "react-native";
 import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useMemo, useState } from "react";
+
+// Constants
+import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
@@ -15,12 +19,6 @@ import LinkComponent from "./LinkComponent";
 import VideoComponent from "./VideoComponent";
 import VoteComponent from "./VoteComponent";
 
-const markdownFontFix = {
-    code_block: { fontFamily: "JetBrains Mono" },
-    code_inline: { fontFamily: "JetBrains Mono" },
-    fence: { fontFamily: "JetBrains Mono" },
-};
-
 const PostComponent = ({ postData, isPostScreen }) => {
     const { id, selftext, subreddit_name_prefixed, title } = postData;
 
@@ -28,6 +26,8 @@ const PostComponent = ({ postData, isPostScreen }) => {
 
     // State
     const [viewWidth, setViewWidth] = useState(-1);
+
+    const colorScheme = useColorScheme();
 
     // Memoization
     const contentType = useMemo(() => getSubmissionType(postData), [postData]);
@@ -38,19 +38,54 @@ const PostComponent = ({ postData, isPostScreen }) => {
     };
 
     return (
-        <View>
-            <Text style={styles.title}>{title}</Text>
+        <View
+            style={[
+                styles.wrapper,
+                colorScheme === "dark"
+                    ? {
+                          backgroundColor: "#46474A",
+                      }
+                    : null,
+            ]}
+        >
+            <Text style={[styles.title, colorScheme === "dark" ? styles.textLight : null]}>
+                {title}
+            </Text>
 
-            <Text style={styles.subName}>{subreddit_name_prefixed}</Text>
+            <Text style={[styles.subName, colorScheme === "dark" ? styles.textLight : null]}>
+                {subreddit_name_prefixed}
+            </Text>
 
             <View style={styles.postContent} onLayout={onLayout}>
-                {/* {contentType === "selftext" && <Markdown>{selftext}</Markdown>} */}
-
                 {contentType === "selftext" &&
                     (isPostScreen ? (
-                        <Markdown style={markdownFontFix}>{selftext}</Markdown>
+                        <Markdown
+                            style={
+                                colorScheme === "dark"
+                                    ? merge(
+                                          {},
+                                          constants.MARKDOWN_FONT_FIX,
+                                          constants.MARKDOWN_DARK_MODE_FIX
+                                      )
+                                    : constants.MARKDOWN_FONT_FIX
+                            }
+                        >
+                            {selftext}
+                        </Markdown>
                     ) : (
-                        <Markdown style={markdownFontFix}>{truncateText(selftext, 150)}</Markdown>
+                        <Markdown
+                            style={
+                                colorScheme === "dark"
+                                    ? merge(
+                                          {},
+                                          constants.MARKDOWN_FONT_FIX,
+                                          constants.MARKDOWN_DARK_MODE_FIX
+                                      )
+                                    : constants.MARKDOWN_FONT_FIX
+                            }
+                        >
+                            {truncateText(selftext, 150)}
+                        </Markdown>
                     ))}
 
                 {contentType === "image" && (
@@ -87,6 +122,12 @@ const PostComponent = ({ postData, isPostScreen }) => {
 };
 
 const styles = StyleSheet.create({
+    wrapper: {
+        padding: 15,
+    },
+    textLight: {
+        color: constants.DARK_THEME_LIGHT_COLOR,
+    },
     title: {
         fontSize: 16,
         fontWeight: "bold",

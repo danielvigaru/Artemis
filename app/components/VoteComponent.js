@@ -1,9 +1,12 @@
-import { Text, Pressable, View, StyleSheet } from "react-native";
+import { Text, Pressable, View, StyleSheet, useColorScheme } from "react-native";
 import { useState, useEffect } from "react";
 
 // FontAwesome
 import { faArrowUp, faArrowDown, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+
+// Constants
+import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
@@ -25,6 +28,8 @@ export default function VoteComponent({ postData, doUpvote, doDownvote, doRemove
 
     const [voteType, setVoteType] = useState("");
     const [score, setScore] = useState(scoreDiff);
+
+    const colorScheme = useColorScheme();
 
     const handleVoteChange = type => {
         let alreadyVoted = false;
@@ -77,26 +82,56 @@ export default function VoteComponent({ postData, doUpvote, doDownvote, doRemove
     return (
         <View style={styles.container}>
             <Pressable onPress={openCommentScreen}>
-                <FontAwesomeIcon icon={faCommentDots} size={ICONS_SIZE} />
+                <FontAwesomeIcon
+                    icon={faCommentDots}
+                    size={ICONS_SIZE}
+                    color={colorScheme === "dark" ? constants.DARK_THEME_LIGHT_COLOR : "black"}
+                />
             </Pressable>
 
-            <Text style={styles.separator}>|</Text>
+            <Text
+                style={[
+                    styles.separator,
+                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
+                ]}
+            >
+                |
+            </Text>
 
             <Pressable onPress={() => handleVoteChange(VOTE_TYPE.UPVOTE)}>
                 <FontAwesomeIcon
                     icon={faArrowUp}
                     size={ICONS_SIZE}
-                    color={voteType === VOTE_TYPE.UPVOTE ? "#30BA00" : "black"}
+                    color={
+                        voteType === VOTE_TYPE.UPVOTE
+                            ? "#30BA00"
+                            : colorScheme === "dark"
+                            ? constants.DARK_THEME_LIGHT_COLOR
+                            : "black"
+                    }
                 />
             </Pressable>
 
-            <Text style={styles.score}>{formatBigNumber(score)}</Text>
+            <Text
+                style={[
+                    styles.score,
+                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
+                ]}
+            >
+                {formatBigNumber(score)}
+            </Text>
 
             <Pressable onPress={() => handleVoteChange(VOTE_TYPE.DOWNVOTE)}>
                 <FontAwesomeIcon
                     icon={faArrowDown}
                     size={ICONS_SIZE}
-                    color={voteType === VOTE_TYPE.DOWNVOTE ? "red" : "black"}
+                    color={
+                        voteType === VOTE_TYPE.DOWNVOTE
+                            ? "red"
+                            : colorScheme === "dark"
+                            ? constants.DARK_THEME_LIGHT_COLOR
+                            : "black"
+                    }
                 />
             </Pressable>
         </View>

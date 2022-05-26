@@ -1,4 +1,4 @@
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, useColorScheme } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import {
     StyleSheet,
@@ -28,6 +28,8 @@ export default function CommentScreen({ postId, navigation }) {
 
     const [loading, setLoading] = useState(false);
     const [commentText, setCommentText] = useState("");
+
+    const colorScheme = useColorScheme();
 
     const onChangeText = text => {
         setCommentText(text);
@@ -72,7 +74,8 @@ export default function CommentScreen({ postId, navigation }) {
                 maxLength={REDDIT_COMMENT_MAX_CHARS}
                 onChangeText={onChangeText}
                 placeholder="Write a nice comment"
-                style={styles.comment}
+                placeholderTextColor={colorScheme === "dark" ? "#fff" : "#585858"}
+                style={[styles.comment, colorScheme === "dark" ? styles.commentDark : null]}
                 value={commentText}
             />
 
@@ -108,6 +111,11 @@ const styles = StyleSheet.create({
         padding: 15,
         maxHeight: "82%",
         paddingTop: 15,
+        fontSize: 17,
+    },
+    commentDark: {
+        backgroundColor: "#5C616A",
+        color: "white",
     },
     sendButton: {
         alignItems: "center",

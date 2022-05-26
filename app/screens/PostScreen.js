@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
     postContainer: {
         backgroundColor: "#fbfbfb",
         marginVertical: 5,
-        padding: 15,
     },
     text: {
         fontSize: 16,

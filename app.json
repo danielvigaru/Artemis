@@ -1,5 +1,6 @@
 {
     "expo": {
+        "userInterfaceStyle": "automatic",
         "name": "Artemis",
         "slug": "Artemis",
         "version": "1.0.0",
