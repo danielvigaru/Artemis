@@ -19,6 +19,8 @@ const zustandStore = create(set => ({
 
     selectedPost: "",
     setSelectedPost: id => set({ selectedPost: id }),
+    selectedPostForComment: "",
+    setSelectedPostForComment: id => set({ selectedPostForComment: id }),
 
     visiblePosts: [],
     setVisiblePosts: idArr => set({ visiblePosts: idArr }),

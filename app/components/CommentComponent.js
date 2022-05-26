@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
+import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useState } from "react";
 
 // Context
@@ -7,10 +8,16 @@ import zustandStore from "../contexts/zustandStore";
 // Components
 import VoteComponent from "./VoteComponent";
 
-const CommentComponent = ({ commentData, depth, isReply }) => {
+const MARKDOWN_FONT_FIX = {
+    code_block: { fontFamily: "JetBrains Mono" },
+    code_inline: { fontFamily: "JetBrains Mono" },
+    fence: { fontFamily: "JetBrains Mono" },
+};
+
+const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
     const { commetsColorPallete, hasAccount, snoo } = zustandStore();
 
-    const { author, body, downs, id, likes, replies, ups } = commentData;
+    const { id, author, body, replies } = commentData;
     const _depth = depth % commetsColorPallete.length;
 
     const [loadMore, setLoadMore] = useState(false);
@@ -27,7 +34,13 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
         }
 
         return replies.map(reply => (
-            <CommentComponent commentData={reply} depth={depth + 1} isReply={true} key={reply.id} />
+            <CommentComponent
+                commentData={reply}
+                navigation={navigation}
+                depth={depth + 1}
+                isReply={true}
+                key={reply.id}
+            />
         ));
     };
 
@@ -50,16 +63,14 @@ const CommentComponent = ({ commentData, depth, isReply }) => {
         >
             <Text style={[styles.text, styles.author]}>{author.name}</Text>
 
-            <Text>{body}</Text>
+            <Markdown style={MARKDOWN_FONT_FIX}>{body}</Markdown>
 
             {hasAccount && (
                 <View style={styles.actionBar}>
                     <VoteComponent
-                        upvotes={ups}
-                        downvotes={downs}
+                        postData={{ ...commentData, navigation }}
                         doUpvote={() => snoo.getComment(id).upvote()}
                         doDownvote={() => snoo.getComment(id).downvote()}
-                        voted={likes}
                         doRemoveVote={() => snoo.getComment(id).unvote()}
                     />
                 </View>

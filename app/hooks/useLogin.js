@@ -16,8 +16,7 @@ import zustandStore from "../contexts/zustandStore";
 
 const clientId = __DEV__ ? constants.CLIENT_ID_EXPO_DEV : constants.CLIENT_ID_EXPO_BUILD;
 const stateVerificationString = generateRandomString(20);
-const scope =
-    "edit, flair, history, identity, mysubreddits, read, report, save, submit, subscribe, vote";
+const scope = "history, identity, read, submit, vote";
 const redirectUrl = Linking.createURL("/login");
 
 const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${clientId}&response_type=code&state=${stateVerificationString}&redirect_uri=${redirectUrl}&duration=permanent&scope=${scope}`;
@@ -80,7 +79,7 @@ export default function useLogin() {
             refreshToken: refreshToken,
         });
         r._nextRequestTimestamp = -1;
-
+        r.config({ debug: true });
         r.getMe().then(me => setAccount(me));
 
         setSnoo(r);
@@ -88,5 +87,5 @@ export default function useLogin() {
         setHasAccount(true);
     }, [refreshToken]);
 
-    return { snoo, doLogin, handleDeepLink };
+    return { doLogin, handleDeepLink };
 }

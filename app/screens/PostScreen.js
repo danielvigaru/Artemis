@@ -11,11 +11,12 @@ import doUserlessAction from "../API/userless/do-userless-action";
 import CommentComponent from "../components/CommentComponent";
 import PostComponent from "../components/PostComponent";
 
-export default function PostScreen({ postId }) {
+export default function PostScreen({ postId, navigation }) {
     const { snoo, hasAccount } = zustandStore();
 
     const [postData, setPostData] = useState({});
     const [comments, setComments] = useState([]);
+    const [refreshing, setRefreshing] = useState(false);
 
     const getPostData = async () => {
         if (hasAccount) {
@@ -26,6 +27,27 @@ export default function PostScreen({ postId }) {
         }
     };
 
+    const getRefreshedPostData = async () => {
+        if (hasAccount) {
+            return await snoo.getSubmission(postId).refresh();
+        } else {
+            const userless = await doUserlessAction();
+            return await userless.getSubmission(postId).refresh();
+        }
+    };
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        getRefreshedPostData()
+            .then(postData => {
+                setPostData(postData);
+                setComments(postData.comments);
+            })
+            .finally(() => {
+                setRefreshing(false);
+            });
+    };
+
     useEffect(async () => {
         const postData = await getPostData();
         setPostData(postData);
@@ -34,21 +56,23 @@ export default function PostScreen({ postId }) {
 
     const Post = () => {
         return (
-            <View>
-                <View style={styles.postContainer}>
-                    <PostComponent postData={postData} isPostScreen={true} />
-                </View>
-                <View>
-                    {comments.length > 0 &&
-                        comments.map(comment => (
-                            <CommentComponent key={comment.id} commentData={comment} />
-                        ))}
-                </View>
+            <View style={styles.postContainer}>
+                <PostComponent postData={{ ...postData, navigation }} isPostScreen={true} />
             </View>
         );
     };
 
-    return <FlatList ListHeaderComponent={Post} />;
+    return (
+        <FlatList
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            ListHeaderComponent={Post}
+            data={comments}
+            renderItem={({ item }) => (
+                <CommentComponent key={item.id} commentData={item} navigation={navigation} />
+            )}
+        />
+    );
 }
 
 const styles = StyleSheet.create({

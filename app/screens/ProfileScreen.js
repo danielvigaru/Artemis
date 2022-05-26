@@ -19,14 +19,23 @@ import constants from "../utils/constants";
 import { deleteSecureData } from "../utils/storage";
 
 // Screens
+import CommentScreen from "./CommentScreen";
 import PostScreen from "./PostScreen";
 
 const Stack = createNativeStackNavigator();
 
 export default function ProfileScreen() {
-    const { snoo, doLogin, handleDeepLink } = useLogin();
+    const { doLogin, handleDeepLink } = useLogin();
 
-    const { account, doLogOut, hasAccount, selectedPost, setVisiblePosts } = zustandStore();
+    const {
+        account,
+        doLogOut,
+        hasAccount,
+        selectedPost,
+        selectedPostForComment,
+        setVisiblePosts,
+        snoo,
+    } = zustandStore();
 
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -99,7 +108,13 @@ export default function ProfileScreen() {
             </Stack.Screen>
 
             <Stack.Screen name="PostDetails" options={{ title: "Comments" }}>
-                {() => <PostScreen posts={posts} postId={selectedPost} />}
+                {({ navigation }) => <PostScreen postId={selectedPost} navigation={navigation} />}
+            </Stack.Screen>
+
+            <Stack.Screen name="AddComment" options={{ title: "Add Comment" }}>
+                {({ navigation }) => (
+                    <CommentScreen postId={selectedPostForComment} navigation={navigation} />
+                )}
             </Stack.Screen>
         </Stack.Navigator>
     );

@@ -35,6 +35,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs(["Unhandled rejection Error"]);
 
 export default function App() {
     const { doLogin } = useLogin();
