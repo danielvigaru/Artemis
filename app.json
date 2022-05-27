@@ -17,12 +17,12 @@
         },
         "assetBundlePatterns": ["**/*"],
         "ios": {
-            "bundleIdentifier": "com.grs.artemis",
+            "bundleIdentifier": "com.danielvigaru.artemis",
             "supportsTablet": true,
             "buildNumber": "1.0.0"
         },
         "android": {
-            "package": "com.grs.artemis",
+            "package": "com.danielvigaru.artemis",
             "icon": "./app/assets/icon.png",
             "adaptiveIcon": {
                 "foregroundImage": "./app/assets/adaptive-icon.png",
