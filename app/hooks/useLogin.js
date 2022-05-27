@@ -79,8 +79,8 @@ export default function useLogin() {
             refreshToken: refreshToken,
         });
         r._nextRequestTimestamp = -1;
-        r.config({ debug: true });
         r.getMe().then(me => setAccount(me));
+        if (__DEV__) r.config({ debug: true });
 
         setSnoo(r);
         setFinishedLogin(true);

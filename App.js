@@ -26,7 +26,7 @@ import constants from "./app/utils/constants";
 import useLogin from "./app/hooks/useLogin";
 
 // Utils
-import { getSecureData } from "./app/utils/storage";
+import { getData, getSecureData } from "./app/utils/storage";
 
 // Screens
 import FeedScreen from "./app/screens/FeedScreen";
@@ -42,7 +42,7 @@ LogBox.ignoreLogs(["Unhandled rejection Error"]);
 const DARK_THEME = {
     dark: true,
     colors: {
-        primary: "#F84505",
+        primary: constants.REDDIT_COLOR,
         background: "#2E282A",
         card: "#46474A",
         text: constants.DARK_THEME_LIGHT_COLOR,
@@ -53,7 +53,7 @@ const DARK_THEME = {
 
 export default function App() {
     const { doLogin } = useLogin();
-    const { setHasAccount, setFinishedLogin } = zustandStore();
+    const { setHasAccount, setFinishedLogin, setCommentsColorPallete } = zustandStore();
 
     const colorScheme = useColorScheme();
 
@@ -73,6 +73,13 @@ export default function App() {
                 } else {
                     setHasAccount(false);
                     setFinishedLogin(true);
+                }
+            });
+
+        getData(constants.COMMENTS_PALLETE) //
+            .then(pallete => {
+                if (pallete) {
+                    setCommentsColorPallete(JSON.parse(pallete));
                 }
             });
 
@@ -107,7 +114,7 @@ export default function App() {
                                 size={25}
                                 color={
                                     focused
-                                        ? "#F84505"
+                                        ? constants.REDDIT_COLOR
                                         : colorScheme === "dark"
                                         ? constants.DARK_THEME_LIGHT_COLOR
                                         : "#505D74"
@@ -115,7 +122,7 @@ export default function App() {
                             />
                         );
                     },
-                    tabBarActiveTintColor: "#F84505",
+                    tabBarActiveTintColor: constants.REDDIT_COLOR,
                     tabBarInactiveTintColor:
                         colorScheme === "dark" ? constants.DARK_THEME_LIGHT_COLOR : "#505D74",
                 })}

@@ -1,5 +1,8 @@
 import create from "zustand";
 
+// Constants
+import constants from "../utils/constants";
+
 const zustandStore = create(set => ({
     account: {},
     setAccount: details => set({ account: details }),
@@ -27,7 +30,8 @@ const zustandStore = create(set => ({
 
     // ---
 
-    commetsColorPallete: ["#09015F", "#AF0069", "#55B3B1", "#F6C065"],
+    commentsColorPallete: constants.COMMENTS_COLOR_PALLETES[0],
+    setCommentsColorPallete: pallete => set({ commentsColorPallete: pallete }),
 }));
 
 export default zustandStore;

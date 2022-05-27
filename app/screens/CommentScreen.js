@@ -15,6 +15,9 @@ import React, { useState, useMemo } from "react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
+// Constants
+import { REDDIT_COLOR } from "../utils/constants";
+
 // Context
 import zustandStore from "../contexts/zustandStore";
 
@@ -119,7 +122,7 @@ const styles = StyleSheet.create({
     },
     sendButton: {
         alignItems: "center",
-        backgroundColor: "#F84505",
+        backgroundColor: REDDIT_COLOR,
         borderRadius: 10,
         margin: 10,
         padding: 10,

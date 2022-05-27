@@ -13,10 +13,10 @@ import VoteComponent from "./VoteComponent";
 import constants from "../utils/constants";
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
-    const { commetsColorPallete, hasAccount, snoo } = zustandStore();
+    const { commentsColorPallete, hasAccount, snoo } = zustandStore();
 
     const { id, author, body, replies } = commentData;
-    const _depth = depth % commetsColorPallete.length;
+    const _depth = depth % commentsColorPallete.length;
 
     const [loadMore, setLoadMore] = useState(false);
 
@@ -64,7 +64,7 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
                           paddingEnd: 0,
                           borderStartWidth: 2,
                           marginStart: -2,
-                          borderColor: depth > 0 ? commetsColorPallete[_depth] : "#f0f0f0",
+                          borderColor: depth > 0 ? commentsColorPallete[_depth] : "#f0f0f0",
                       }
                     : {
                           paddingHorizontal: 20,
