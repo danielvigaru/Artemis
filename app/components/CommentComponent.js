@@ -13,7 +13,7 @@ import VoteComponent from "./VoteComponent";
 import constants from "../utils/constants";
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
-    const { commentsColorPallete, hasAccount, snoo } = zustandStore();
+    const { commentsColorPallete, hasAccount, snoo, isLeftHandMode } = zustandStore();
 
     const { id, author, body, replies } = commentData;
     const _depth = depth % commentsColorPallete.length;
@@ -57,15 +57,23 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
         <View
             style={[
                 styles.commsContainer,
-                colorScheme === "dark" ? styles.commsContainerDark : null,
+                colorScheme === "dark" && styles.commsContainerDark,
                 isReply
-                    ? {
-                          paddingStart: 20,
-                          paddingEnd: 0,
-                          borderStartWidth: 2,
-                          marginStart: -2,
-                          borderColor: depth > 0 ? commentsColorPallete[_depth] : "#f0f0f0",
-                      }
+                    ? isLeftHandMode
+                        ? {
+                              paddingStart: 0,
+                              paddingEnd: 20,
+                              borderEndWidth: 2,
+                              marginEnd: -2,
+                              borderColor: depth > 0 ? commentsColorPallete[_depth] : "#f0f0f0",
+                          }
+                        : {
+                              paddingStart: 20,
+                              paddingEnd: 0,
+                              borderStartWidth: 2,
+                              marginStart: -2,
+                              borderColor: depth > 0 ? commentsColorPallete[_depth] : "#f0f0f0",
+                          }
                     : {
                           paddingHorizontal: 20,
                       },
@@ -75,7 +83,8 @@ const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
                 style={[
                     styles.text,
                     styles.author,
-                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
+                    colorScheme === "dark" && { color: constants.DARK_THEME_LIGHT_COLOR },
+                    isLeftHandMode && { alignSelf: "flex-end" },
                 ]}
             >
                 {author.name}
