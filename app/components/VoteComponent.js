@@ -21,7 +21,7 @@ const VOTE_TYPE = {
 };
 
 export default function VoteComponent({ postData, doUpvote, doDownvote, doRemoveVote }) {
-    const { setSelectedPostForComment } = zustandStore();
+    const { setSelectedPostForComment, isLeftHandMode } = zustandStore();
 
     const { id, ups: upvotes, downs: downvotes, likes: voted, navigation } = postData;
     const scoreDiff = upvotes - downvotes || 0;
@@ -80,7 +80,12 @@ export default function VoteComponent({ postData, doUpvote, doDownvote, doRemove
     }, []);
 
     return (
-        <View style={styles.container}>
+        <View
+            style={[
+                styles.container,
+                isLeftHandMode && { flexDirection: "row-reverse", alignSelf: "flex-start" },
+            ]}
+        >
             <Pressable onPress={openCommentScreen}>
                 <FontAwesomeIcon
                     icon={faCommentDots}
@@ -92,48 +97,50 @@ export default function VoteComponent({ postData, doUpvote, doDownvote, doRemove
             <Text
                 style={[
                     styles.separator,
-                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
+                    colorScheme === "dark" && { color: constants.DARK_THEME_LIGHT_COLOR },
                 ]}
             >
                 |
             </Text>
 
-            <Pressable onPress={() => handleVoteChange(VOTE_TYPE.UPVOTE)}>
-                <FontAwesomeIcon
-                    icon={faArrowUp}
-                    size={ICONS_SIZE}
-                    color={
-                        voteType === VOTE_TYPE.UPVOTE
-                            ? "#30BA00"
-                            : colorScheme === "dark"
-                            ? constants.DARK_THEME_LIGHT_COLOR
-                            : "black"
-                    }
-                />
-            </Pressable>
+            <View style={{ flexDirection: "row" }}>
+                <Pressable onPress={() => handleVoteChange(VOTE_TYPE.UPVOTE)}>
+                    <FontAwesomeIcon
+                        icon={faArrowUp}
+                        size={ICONS_SIZE}
+                        color={
+                            voteType === VOTE_TYPE.UPVOTE
+                                ? "#30BA00"
+                                : colorScheme === "dark"
+                                ? constants.DARK_THEME_LIGHT_COLOR
+                                : "black"
+                        }
+                    />
+                </Pressable>
 
-            <Text
-                style={[
-                    styles.score,
-                    colorScheme === "dark" ? { color: constants.DARK_THEME_LIGHT_COLOR } : null,
-                ]}
-            >
-                {formatBigNumber(score)}
-            </Text>
+                <Text
+                    style={[
+                        styles.score,
+                        colorScheme === "dark" && { color: constants.DARK_THEME_LIGHT_COLOR },
+                    ]}
+                >
+                    {formatBigNumber(score)}
+                </Text>
 
-            <Pressable onPress={() => handleVoteChange(VOTE_TYPE.DOWNVOTE)}>
-                <FontAwesomeIcon
-                    icon={faArrowDown}
-                    size={ICONS_SIZE}
-                    color={
-                        voteType === VOTE_TYPE.DOWNVOTE
-                            ? "red"
-                            : colorScheme === "dark"
-                            ? constants.DARK_THEME_LIGHT_COLOR
-                            : "black"
-                    }
-                />
-            </Pressable>
+                <Pressable onPress={() => handleVoteChange(VOTE_TYPE.DOWNVOTE)}>
+                    <FontAwesomeIcon
+                        icon={faArrowDown}
+                        size={ICONS_SIZE}
+                        color={
+                            voteType === VOTE_TYPE.DOWNVOTE
+                                ? "red"
+                                : colorScheme === "dark"
+                                ? constants.DARK_THEME_LIGHT_COLOR
+                                : "black"
+                        }
+                    />
+                </Pressable>
+            </View>
         </View>
     );
 }
