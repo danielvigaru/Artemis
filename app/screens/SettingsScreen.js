@@ -1,5 +1,5 @@
 import { Dropdown } from "react-native-element-dropdown";
-import { StyleSheet, Text, View, useColorScheme } from "react-native";
+import { StyleSheet, Text, View, useColorScheme, Switch } from "react-native";
 import React, { useState, useEffect } from "react";
 
 // Constants
@@ -16,7 +16,8 @@ export default function Settings() {
     const [isFocus, setIsFocus] = useState(false);
     const [dropdownOptions, setDropdownOptions] = useState([]);
 
-    const { commentsColorPallete, setCommentsColorPallete } = zustandStore();
+    const { commentsColorPallete, setCommentsColorPallete, isLeftHandMode, setIsLeftHandMode } =
+        zustandStore();
 
     const colorScheme = useColorScheme();
 
@@ -51,6 +52,13 @@ export default function Settings() {
         setData(constants.COMMENTS_PALLETE, JSON.stringify(value));
     };
 
+    const onLeftHandModeChange = () => {
+        const _isLeftHandMode = !isLeftHandMode;
+
+        setIsLeftHandMode(_isLeftHandMode);
+        setData(constants.LEFT_HAND_MODE, JSON.stringify(_isLeftHandMode));
+    };
+
     useEffect(() => {
         let options = [];
 
@@ -69,38 +77,63 @@ export default function Settings() {
     }, []);
 
     return (
-        <View
-            style={[
-                styles.container,
-                colorScheme === "dark" ? { backgroundColor: "#46474A" } : null,
-            ]}
-        >
-            {renderLabel()}
-            <Dropdown
-                style={[styles.dropdown, isFocus && { borderColor: constants.REDDIT_COLOR }]}
-                containerStyle={
-                    colorScheme === "dark" && {
-                        backgroundColor: "#46474A",
-                    }
-                }
-                activeColor={colorScheme === "dark" ? "#888A90" : undefined}
-                placeholderStyle={styles.placeholderStyle}
-                selectedTextStyle={[
-                    styles.selectedTextStyle,
-                    colorScheme === "dark" && {
-                        color: constants.DARK_THEME_LIGHT_COLOR,
-                    },
+        <View>
+            <View
+                style={[
+                    styles.container,
+                    colorScheme === "dark" ? { backgroundColor: "#46474A" } : null,
                 ]}
-                inputSearchStyle={styles.inputSearchStyle}
-                data={dropdownOptions}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? "Comments color pallete" : "..."}
-                value={value}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={onPalleteChange}
-            />
+            >
+                {renderLabel()}
+                <Dropdown
+                    style={[styles.dropdown, isFocus && { borderColor: constants.REDDIT_COLOR }]}
+                    containerStyle={
+                        colorScheme === "dark" && {
+                            backgroundColor: "#46474A",
+                        }
+                    }
+                    activeColor={colorScheme === "dark" ? "#888A90" : undefined}
+                    placeholderStyle={styles.placeholderStyle}
+                    selectedTextStyle={[
+                        styles.selectedTextStyle,
+                        colorScheme === "dark" && {
+                            color: constants.DARK_THEME_LIGHT_COLOR,
+                        },
+                    ]}
+                    inputSearchStyle={styles.inputSearchStyle}
+                    data={dropdownOptions}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={!isFocus ? "Comments color pallete" : "..."}
+                    value={value}
+                    onFocus={() => setIsFocus(true)}
+                    onBlur={() => setIsFocus(false)}
+                    onChange={onPalleteChange}
+                />
+            </View>
+
+            <View
+                style={[
+                    styles.container,
+                    { alignItems: "center", flexDirection: "row", justifyContent: "space-between" },
+                    colorScheme === "dark" && { backgroundColor: "#46474A" },
+                ]}
+            >
+                <Text
+                    style={[
+                        { marginStart: 5 },
+                        colorScheme === "dark" && { color: constants.DARK_THEME_LIGHT_COLOR },
+                    ]}
+                >
+                    Left Hand Mode
+                </Text>
+
+                <Switch
+                    trackColor="#81b0ff"
+                    onValueChange={onLeftHandModeChange}
+                    value={isLeftHandMode}
+                />
+            </View>
         </View>
     );
 }

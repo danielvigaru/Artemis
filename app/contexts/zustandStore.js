@@ -32,6 +32,9 @@ const zustandStore = create(set => ({
 
     commentsColorPallete: constants.COMMENTS_COLOR_PALLETES[0],
     setCommentsColorPallete: pallete => set({ commentsColorPallete: pallete }),
+
+    isLeftHandMode: false,
+    setIsLeftHandMode: option => set({ isLeftHandMode: option }),
 }));
 
 export default zustandStore;

@@ -53,7 +53,8 @@ const DARK_THEME = {
 
 export default function App() {
     const { doLogin } = useLogin();
-    const { setHasAccount, setFinishedLogin, setCommentsColorPallete } = zustandStore();
+    const { setHasAccount, setFinishedLogin, setCommentsColorPallete, setIsLeftHandMode } =
+        zustandStore();
 
     const colorScheme = useColorScheme();
 
@@ -80,6 +81,13 @@ export default function App() {
             .then(pallete => {
                 if (pallete) {
                     setCommentsColorPallete(JSON.parse(pallete));
+                }
+            });
+
+        getData(constants.LEFT_HAND_MODE) //
+            .then(isLeftHandMode => {
+                if (isLeftHandMode) {
+                    setIsLeftHandMode(JSON.parse(isLeftHandMode));
                 }
             });
 
