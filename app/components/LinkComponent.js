@@ -1,10 +1,10 @@
 import { Pressable, StyleSheet, Text, View, useColorScheme } from "react-native";
 import * as Linking from "expo-linking";
 
-// Components
+// Componente
 import ImageComponent from "./ImageComponent";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 export default function LinkComponent({ postData, viewWidth }) {
@@ -15,7 +15,9 @@ export default function LinkComponent({ postData, viewWidth }) {
 
     return (
         <Pressable style={styles.wrapper} onPress={() => Linking.openURL(url)}>
-            {hasPreview && <ImageComponent postData={postData} viewWidth={viewWidth} />}
+            {hasPreview && (
+                <ImageComponent postData={postData} viewWidth={viewWidth} roundedCorners={false} />
+            )}
 
             <View
                 style={[styles.linkWrapper, colorScheme === "dark" ? styles.linkWrapperDark : null]}

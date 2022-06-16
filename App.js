@@ -1,43 +1,37 @@
-// Dependency fixes
 import { decode, encode } from "base-64";
 if (!global.btoa) global.btoa = encode;
 if (!global.atob) global.atob = decode;
 
-// Fontawesome icons
+// Iconite Fontawesome
 import { faAddressCard } from "@fortawesome/free-regular-svg-icons";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { faRedditAlien } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LogBox, useColorScheme } from "react-native";
+import { useColorScheme } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { useEffect } from "react";
 import * as Font from "expo-font";
 
-// Contexts
+// Context
 import zustandStore from "./app/contexts/zustandStore";
 
-// Constants
+// Constante
 import constants from "./app/utils/constants";
 
 // Hooks
 import useLogin from "./app/hooks/useLogin";
 
-// Utils
+// Utilitare
 import { getData, getSecureData } from "./app/utils/storage";
 
-// Screens
+// Ecrane
 import FeedScreen from "./app/screens/FeedScreen";
 import ProfileScreen from "./app/screens/ProfileScreen";
 import SettingsScreen from "./app/screens/SettingsScreen";
 
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
-
-LogBox.ignoreLogs(["Setting a timer"]);
-LogBox.ignoreLogs(["Unhandled rejection Error"]);
 
 const DARK_THEME = {
     dark: true,

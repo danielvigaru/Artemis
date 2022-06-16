@@ -1,6 +1,6 @@
 import create from "zustand";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 const zustandStore = create(set => ({

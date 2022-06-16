@@ -1,9 +1,7 @@
-// Utils
+// Utilitare
 import getHeaders from "../utils/get-headers";
 
 export default function getUserlessToken(deviceId) {
-    // console.log("deviceId", deviceId);
-
     const params = new URLSearchParams();
     params.append("grant_type", "https://oauth.reddit.com/grants/installed_client");
     params.append("device_id", deviceId);
@@ -17,5 +15,5 @@ export default function getUserlessToken(deviceId) {
         .then(result => {
             return result;
         })
-        .catch(error => console.log("[ useUserlessAuth ] error:", error));
+        .catch(error => console.log("[useUserlessAuth] error:", error));
 }

@@ -4,7 +4,7 @@ import { Video } from "expo-av";
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Utils
+// Utilitare
 import calcCanvasHeight from "../utils/calc-canvas-height";
 
 export default function VideoComponent({ postData, isVideo, viewWidth }) {

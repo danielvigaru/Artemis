@@ -2,13 +2,13 @@ import { Dropdown } from "react-native-element-dropdown";
 import { StyleSheet, Text, View, useColorScheme, Switch } from "react-native";
 import React, { useState, useEffect } from "react";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Storage
+// Stocare
 import { setData } from "../utils/storage";
 
 export default function Settings() {
@@ -22,25 +22,24 @@ export default function Settings() {
     const colorScheme = useColorScheme();
 
     const renderLabel = () => {
-        if (value || isFocus) {
-            return (
-                <Text
-                    style={[
-                        styles.label,
-                        colorScheme === "dark"
-                            ? {
-                                  backgroundColor: "#46474A",
-                                  color: constants.DARK_THEME_LIGHT_COLOR,
-                              }
-                            : null,
-                        isFocus && { color: constants.REDDIT_COLOR },
-                    ]}
-                >
-                    Choose comment color pallete
-                </Text>
-            );
-        }
-        return null;
+        if (!(value || isFocus)) return null;
+
+        return (
+            <Text
+                style={[
+                    styles.label,
+                    colorScheme === "dark"
+                        ? {
+                              backgroundColor: "#46474A",
+                              color: constants.DARK_THEME_LIGHT_COLOR,
+                          }
+                        : null,
+                    isFocus && { color: constants.REDDIT_COLOR },
+                ]}
+            >
+                Choose comment color pallete
+            </Text>
+        );
     };
 
     const onPalleteChange = item => {
@@ -149,9 +148,6 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 8,
         paddingHorizontal: 8,
-    },
-    icon: {
-        marginRight: 5,
     },
     label: {
         position: "absolute",

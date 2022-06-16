@@ -1,9 +1,9 @@
 const snoowrap = require("snoowrap");
 
-// Constants
+// Constante
 import constants from "../../utils/constants";
 
-// Utils
+// Utilitare
 import { getSecureData, setSecureData } from "../../utils/storage";
 import generateRandomString from "../../utils/generate-random-string";
 import getUserAgent from "../../utils/get-user-agent";
@@ -31,6 +31,6 @@ export default async function doUserlessAction() {
             userAgent: getUserAgent(),
         });
     } catch (error) {
-        return console.log("[ doUserlessAction ]", error);
+        return console.log("[doUserlessAction]", error);
     }
 }

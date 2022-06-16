@@ -6,19 +6,19 @@ import React, { useEffect, useState, useRef } from "react";
 // Hooks
 import useLogin from "../hooks/useLogin";
 
-// Components
+// Componente
 import FeedPost from "../components/FeedPost";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
-// Utils
+// Utilitare
 import { deleteSecureData } from "../utils/storage";
 
-// Screens
+// Ecrane
 import CommentScreen from "./CommentScreen";
 import PostScreen from "./PostScreen";
 
@@ -79,14 +79,10 @@ export default function ProfileScreen() {
     const Card = ({ item }) => <FeedPost postData={item} navigation={item.navigation} />;
 
     const headerComponent = () => {
-        return (
-            <View>
-                {account && account.name ? (
-                    <Button title="Log out" onPress={handleLogOut} />
-                ) : (
-                    <Button title="Login" onPress={() => doLogin()} />
-                )}
-            </View>
+        return account && account.name ? (
+            <Button title="Log out" onPress={handleLogOut} />
+        ) : (
+            <Button title="Login" onPress={() => doLogin()} />
         );
     };
 

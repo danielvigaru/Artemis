@@ -15,13 +15,13 @@ import React, { useState, useMemo } from "react";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Utils
+// Utilitare
 import isComment from "../API/is-comment";
 
 const REDDIT_COMMENT_MAX_CHARS = 10000;
@@ -60,8 +60,8 @@ export default function CommentScreen({ postId, navigation }) {
     );
 
     const sendButtonDisabled = useMemo(
-        () => commentTooLong || commentText.length === 0,
-        [commentTooLong, commentText]
+        () => commentText.length > REDDIT_COMMENT_MAX_CHARS || commentText.length === 0,
+        [commentText]
     );
 
     return (

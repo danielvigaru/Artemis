@@ -1,7 +1,7 @@
 import { Image } from "react-native";
 import { useMemo } from "react";
 
-// Utils
+// Utilitare
 import calcCanvasHeight from "../utils/calc-canvas-height";
 
 export default function ImageComponent({ postData, viewWidth, roundedCorners }) {
@@ -11,7 +11,7 @@ export default function ImageComponent({ postData, viewWidth, roundedCorners }) 
         if (!preview.images || !preview.images[0].resolutions) return;
 
         const arr = preview.images[0].resolutions;
-        const lastItem = arr[arr.length - 1]; // quality of the image, highest quality: preview.images[0].source.url
+        const lastItem = arr[arr.length - 1];
         return lastItem.url;
     }, [postData]);
 

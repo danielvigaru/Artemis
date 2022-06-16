@@ -3,10 +3,10 @@ import { useState, useEffect } from "react";
 import * as Linking from "expo-linking";
 import getHeaders from "../API/utils/get-headers";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
-// Utils
+// Utilitare
 import { setSecureData } from "../utils/storage";
 import generateRandomString from "../utils/generate-random-string";
 import getUserAgent from "../utils/get-user-agent";
@@ -24,7 +24,7 @@ const authUrl = `https://www.reddit.com/api/v1/authorize.compact?client_id=${cli
 export default function useLogin() {
     const [refreshToken, setRefreshToken] = useState("");
 
-    const { setAccount, setHasAccount, setFinishedLogin, snoo, setSnoo } = zustandStore();
+    const { setAccount, setHasAccount, setFinishedLogin, setSnoo } = zustandStore();
 
     const doLogin = refreshToken => {
         if (refreshToken) {
@@ -39,7 +39,7 @@ export default function useLogin() {
 
         const { error, code, state } = Linking.parse(url).queryParams;
 
-        if (error) console.log("[ handleDeepLink ] error: ", error);
+        if (error) console.log("[handleDeepLink] error: ", error);
         if (state === stateVerificationString) getTokens(code);
     };
 
@@ -64,13 +64,13 @@ export default function useLogin() {
                     setRefreshToken(refresh_token);
                 }
             })
-            .catch(erorr => console.log(erorr));
+            .catch(error => console.log(error));
     };
 
     useEffect(() => {
         if (!refreshToken) return;
 
-        console.log("Creating snoowrap instance with refresh token:", refreshToken);
+        console.log("Se creaza o instanta snoowrap cu tokenul de refresh:", refreshToken);
 
         const r = new snoowrap({
             userAgent: getUserAgent(),

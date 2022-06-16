@@ -4,7 +4,7 @@ import React from "react";
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Components
+// Componente
 import PostComponent from "./PostComponent";
 
 const FeedPost = ({ postData, navigation }) => {

@@ -1,17 +1,17 @@
 import { Text, Pressable, View, StyleSheet, useColorScheme } from "react-native";
 import { useState, useEffect } from "react";
 
-// FontAwesome
+// Iconite FontAwesome
 import { faArrowUp, faArrowDown, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Utils
+// Utilitare
 import formatBigNumber from "../utils/format-big-number";
 
 const ICONS_SIZE = 20;

@@ -3,17 +3,17 @@ import { StyleSheet, Text, View, useColorScheme } from "react-native";
 import Markdown from "@flowchase/react-native-markdown-display";
 import React, { useMemo, useState } from "react";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Utils
+// Utilitare
 import getSubmissionType from "../utils/get-submission-type";
 import truncateText from "../utils/truncate-text";
 
-// Components
+// Componente
 import ImageComponent from "./ImageComponent";
 import LinkComponent from "./LinkComponent";
 import VideoComponent from "./VideoComponent";

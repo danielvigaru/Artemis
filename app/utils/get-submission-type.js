@@ -4,9 +4,14 @@ export default function getSubmissionType(submission) {
     if (is_self) return "selftext";
     if (is_video) return "video";
     if (preview) {
-        if (preview.reddit_video_preview && preview.reddit_video_preview.is_gif) return "gif";
-        if (preview.images && !is_reddit_media_domain) return "link-with-preview";
-        if (preview.images) return "image";
+        const { reddit_video_preview, images } = preview;
+
+        if (reddit_video_preview && reddit_video_preview.is_gif) return "gif";
+        if (images) {
+            if (!is_reddit_media_domain) return "link-with-preview";
+
+            return "image";
+        }
     }
 
     return "link";

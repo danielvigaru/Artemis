@@ -7,7 +7,7 @@ import zustandStore from "../contexts/zustandStore";
 // API
 import doUserlessAction from "../API/userless/do-userless-action";
 
-// Components
+// Componente
 import CommentComponent from "../components/CommentComponent";
 import PostComponent from "../components/PostComponent";
 
@@ -79,18 +79,5 @@ const styles = StyleSheet.create({
     postContainer: {
         backgroundColor: "#fbfbfb",
         marginVertical: 5,
-    },
-    text: {
-        fontSize: 16,
-    },
-    subName: {
-        marginTop: 5,
-        fontSize: 13,
-    },
-    bold: {
-        fontWeight: "bold",
-    },
-    postContent: {
-        marginVertical: 20,
     },
 });

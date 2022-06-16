@@ -2,10 +2,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native";
 import { useEffect, useRef, useState } from "react";
 
-// Components
+// Componente
 import FeedPost from "../components/FeedPost";
 
-// Screens
+// Ecrane
 import CommentScreen from "./CommentScreen";
 import PostScreen from "./PostScreen";
 

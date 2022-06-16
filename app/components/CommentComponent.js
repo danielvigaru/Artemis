@@ -6,10 +6,10 @@ import React, { useState } from "react";
 // Context
 import zustandStore from "../contexts/zustandStore";
 
-// Components
+// Componente
 import VoteComponent from "./VoteComponent";
 
-// Constants
+// Constante
 import constants from "../utils/constants";
 
 const CommentComponent = ({ commentData, depth, isReply, navigation }) => {
